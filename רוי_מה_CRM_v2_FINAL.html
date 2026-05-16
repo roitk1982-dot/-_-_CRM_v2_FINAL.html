@@ -1,0 +1,2521 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>רוי מגירה — CRM נדל"ן RE/MAX</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#222638;--surface3:#2a2f45;
+  --border:#2e3350;--border2:#3d4468;
+  --text:#e8eaf6;--text2:#9fa8d5;--text3:#5c6494;
+  --primary:#4f6ef7;--primary2:rgba(79,110,247,0.15);--primary3:#3d58d4;
+  --gold:#f5a623;--gold2:rgba(245,166,35,0.15);
+  --green:#22c55e;--green2:rgba(34,197,94,0.15);
+  --red:#ef4444;--red2:rgba(239,68,68,0.12);
+  --amber:#f59e0b;--amber2:rgba(245,158,11,0.15);
+  --wa:#25D366;--wa2:#128C7E;--wa3:rgba(37,211,102,0.12);
+  --r:8px;--r2:12px;--r3:16px;
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+  --shadow2:0 8px 40px rgba(0,0,0,0.5);
+}
+body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);font-size:14px;height:100vh;overflow:hidden}
+.app{display:flex;height:100vh}
+
+/* SIDEBAR */
+.sb{width:220px;min-width:220px;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-logo{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
+.sb-logo-top{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.sb-logo-icon{width:38px;height:38px;background:linear-gradient(135deg,#4f6ef7,#f5a623);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 12px rgba(79,110,247,0.4)}
+.sb-logo h2{font-size:14px;font-weight:800;color:var(--text);line-height:1.2}
+.sb-logo small{font-size:10px;color:var(--text3);display:block;margin-top:2px}
+.sb-section{font-size:9px;color:var(--text3);padding:16px 14px 6px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.nav{display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;transition:.15s;border-radius:var(--r);margin:1px 8px;user-select:none}
+.nav:hover{background:var(--surface2);color:var(--text)}
+.nav.on{background:var(--primary2);color:var(--primary);font-weight:700}
+.nav svg,.nav .ni{flex-shrink:0;width:15px;height:15px;opacity:.7}
+.nav.on .ni{opacity:1}
+.nav .badge{margin-right:auto;background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:999px;font-weight:800}
+.sb-bottom{margin-top:auto;padding:12px 8px;border-top:1px solid var(--border)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;height:56px}
+.topbar h1{font-size:15px;font-weight:700;flex:1}
+.content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* BUTTONS */
+.btn{padding:8px 14px;font-size:12px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;transition:.15s;white-space:nowrap;font-weight:500}
+.btn:hover{background:var(--surface3);border-color:var(--border2)}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600}
+.btn-primary:hover{background:var(--primary3);border-color:var(--primary3)}
+.btn-wa{background:var(--wa);color:#fff;border-color:var(--wa);font-weight:600}
+.btn-wa:hover{background:var(--wa2)}
+.btn-gold{background:linear-gradient(135deg,#f5a623,#e8941a);color:#fff;border-color:#f5a623;font-weight:700}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-red{background:var(--red2);color:var(--red);border-color:rgba(239,68,68,0.3)}
+.btn-green{background:var(--green2);color:var(--green);border-color:rgba(34,197,94,0.3)}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:18px}
+.card-hd{font-size:13px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--text)}
+.card-hd small{color:var(--text3);font-weight:400;font-size:11px}
+
+/* METRICS */
+.mrow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mc{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;position:relative;overflow:hidden}
+.mc::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:var(--primary)}
+.mc.gold::before{background:var(--gold)}
+.mc.green::before{background:var(--green)}
+.mc.red::before{background:var(--red)}
+.mc .v{font-size:28px;font-weight:900;margin:4px 0;line-height:1}
+.mc .l{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.mc .s{font-size:11px;margin-top:4px;color:var(--text3)}
+.s-up{color:var(--green)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:right;padding:8px 10px;color:var(--text3);font-weight:700;font-size:10px;border-bottom:1px solid var(--border);background:var(--surface2);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.tbl td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tr:last-child td{border:none}
+.tbl tr:hover td{background:var(--surface2)}
+
+/* BADGES */
+.b{display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap}
+.b-primary{background:var(--primary2);color:var(--primary)}
+.b-gold{background:var(--gold2);color:var(--gold)}
+.b-green{background:var(--green2);color:var(--green)}
+.b-red{background:var(--red2);color:var(--red)}
+.b-amber{background:var(--amber2);color:var(--amber)}
+.b-gray{background:rgba(255,255,255,0.06);color:var(--text3)}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r3);padding:24px;width:580px;max-width:100%;max-height:92vh;overflow-y:auto;direction:rtl;box-shadow:var(--shadow2)}
+.modal::-webkit-scrollbar{width:4px}
+.modal::-webkit-scrollbar-thumb{background:var(--border2)}
+.modal-hd{font-size:16px;font-weight:800;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.modal-hd .x{cursor:pointer;font-size:20px;color:var(--text3);line-height:1;padding:4px 8px;border-radius:var(--r);transition:.15s}
+.modal-hd .x:hover{background:var(--surface2);color:var(--text)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px}
+.fg input,.fg select,.fg textarea{padding:9px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:inherit;direction:rtl;background:var(--surface2);color:var(--text);transition:.15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,110,247,0.15)}
+.fg select option{background:var(--surface2)}
+.fg textarea{resize:vertical;min-height:80px}
+.fg.full{grid-column:span 2}
+.factions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:16px;border-top:1px solid var(--border)}
+.checks{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.checks label{display:flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;transition:.15s;color:var(--text2);background:var(--surface2)}
+.checks label:hover{background:var(--primary2);border-color:var(--primary);color:var(--primary)}
+.checks input[type=checkbox]{accent-color:var(--primary)}
+.checks label:has(input:checked){background:var(--primary2);border-color:var(--primary);color:var(--primary);font-weight:600}
+
+/* PAGES */
+.page{display:none;flex-direction:column;gap:16px}
+.page.on{display:flex}
+
+/* SEARCH BAR */
+.sbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.sbar input,.sbar select{padding:8px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:12px;font-family:inherit;direction:rtl;color:var(--text);background:var(--surface2)}
+.sbar input{flex:1;min-width:160px}
+.sbar input:focus,.sbar select:focus{outline:none;border-color:var(--primary)}
+.sbar select option{background:var(--surface2)}
+
+/* WHATSAPP */
+.wa-phone{background:#0d1b12;border-radius:var(--r2);overflow:hidden;border:1px solid var(--border)}
+.wa-hbar{background:#128C7E;color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.wa-av{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.wa-msgs{padding:10px;flex:1;min-height:280px;max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.wa-msg{max-width:80%;padding:8px 12px;border-radius:10px;font-size:12px;line-height:1.55;word-break:break-word}
+.wa-msg.out{background:#1a472a;align-self:flex-end;border-radius:10px 10px 0 10px;color:#dcf8c6}
+.wa-t{font-size:10px;color:var(--text3);margin-top:3px;text-align:left}
+.wa-ibar{background:#1a1d27;padding:8px;display:flex;gap:8px;align-items:center;border-top:1px solid var(--border)}
+.wa-ibar input{flex:1;border:none;outline:none;font-size:13px;font-family:inherit;direction:rtl;background:transparent;color:var(--text)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--surface3);border:1px solid var(--border2);color:var(--text);padding:10px 22px;border-radius:var(--r2);font-size:13px;font-weight:600;z-index:9000;transition:transform .3s;pointer-events:none;box-shadow:var(--shadow2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px 20px;color:var(--text3)}
+
+/* ACTIONS */
+.acts{display:flex;gap:4px;justify-content:flex-end;flex-wrap:nowrap}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;gap:2px}
+.tab{padding:10px 16px;font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;user-select:none;margin-bottom:-1px;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab.on{color:var(--primary);border-bottom-color:var(--primary)}
+
+/* FEAT TAGS */
+.feat-tag{display:inline-flex;align-items:center;font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);gap:3px}
+.feat-tag.yes{background:var(--green2);border-color:rgba(34,197,94,0.3);color:var(--green)}
+
+/* ALERT ITEMS */
+.alert-item{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border);border-radius:var(--r);margin-bottom:6px;background:var(--surface2);transition:.15s}
+.alert-item:hover{border-color:var(--border2)}
+.alert-item.urgent{border-color:rgba(239,68,68,0.4);background:var(--red2)}
+.alert-item.week{border-color:rgba(245,158,11,0.3)}
+
+/* TEMPLATE CARDS */
+.tpl-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:.15s}
+.tpl-card:hover{background:var(--surface3);border-color:var(--primary)}
+
+/* CALENDAR */
+.mini-cal{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);padding:12px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-weight:700;font-size:13px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day{text-align:center;padding:5px 2px;font-size:11px;border-radius:6px;cursor:pointer;transition:.15s}
+.cal-day:hover{background:var(--surface3)}
+.cal-day.today{background:var(--primary);color:#fff;font-weight:700}
+.cal-day.has-meeting{background:var(--gold2);color:var(--gold);font-weight:700}
+.cal-day.header{color:var(--text3);font-size:10px;font-weight:700;cursor:default}
+.cal-day.other{color:var(--text3)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sb">
+  <div class="sb-logo">
+    <div class="sb-logo-top">
+      <div class="sb-logo-icon">🏠</div>
+      <div>
+        <h2>רוי מגירה</h2>
+        <small>RE/MAX צוות רוזנברגר</small>
+      </div>
+    </div>
+    <small style="color:var(--text3);font-size:10px;margin-top:4px;display:block">054-6661546</small>
+  </div>
+
+  <div class="sb-section">ראשי</div>
+  <div class="nav on" id="nav-dashboard" onclick="nav('dashboard')">
+    <span class="ni">📊</span> לוח בקרה
+  </div>
+
+  <div class="sb-section">CRM</div>
+  <div class="nav" id="nav-clients" onclick="nav('clients')">
+    <span class="ni">👥</span> לקוחות
+    <span class="badge" id="cnt-clients" style="display:none"></span>
+  </div>
+  <div class="nav" id="nav-properties" onclick="nav('properties')">
+    <span class="ni">🏠</span> נכסים
+  </div>
+  <div class="nav" id="nav-alerts" onclick="nav('alerts')">
+    <span class="ni">🔔</span> התראות ופולואפ
+    <span class="badge" id="alert-badge"></span>
+  </div>
+
+  <div class="sb-section">תקשורת</div>
+  <div class="nav" id="nav-whatsapp" onclick="nav('whatsapp')">
+    <span class="ni">💬</span> וואטסאפ
+  </div>
+  <div class="nav" id="nav-bulk" onclick="nav('bulk')">
+    <span class="ni">📨</span> שליחה המונית
+  </div>
+  <div class="nav" id="nav-templates" onclick="nav('templates')">
+    <span class="ni">📋</span> תבניות הודעה
+  </div>
+
+  <div class="sb-section">עסקים</div>
+  <div class="nav" id="nav-calendar" onclick="nav('calendar')">
+    <span class="ni">📅</span> יומן פגישות
+  </div>
+  <div class="nav" id="nav-leads" onclick="nav('leads')">
+    <span class="ni">⚡</span> לידים
+    <span class="badge" id="cnt-leads"></span>
+  </div>
+  <div class="nav" id="nav-publisher" onclick="nav('publisher')">
+    <span class="ni">📱</span> פרסום רשתות חברתיות
+  </div>
+
+  <div class="sb-bottom">
+    <div style="font-size:10px;color:var(--text3);text-align:center">v2.0 | 2025/26</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <h1 id="pageTitle">לוח בקרה</h1>
+    <div id="gdrive-status" style="font-size:11px;color:var(--text3);display:flex;align-items:center;gap:5px"></div>
+    <button class="btn btn-sm" style="background:#4285f4;color:#fff;border-color:#4285f4" onclick="gdriveBackup()" id="btn-gdrive">
+      ☁️ שמור ב-Drive
+    </button>
+    <button class="btn btn-sm" onclick="gdriveRestore()" title="שחזר מ-Google Drive">📥 Drive שחזר</button>
+    <button class="btn btn-sm" onclick="exportData()">💾 גיבוי JSON</button>
+    <button class="btn btn-sm" onclick="document.getElementById('importFile').click()">📤 שחזור JSON</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)"/>
+  </div>
+  <div class="content">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div class="page on" id="p-dashboard">
+      <div class="mrow">
+        <div class="mc">
+          <div class="l">לקוחות פעילים</div>
+          <div class="v" id="dm-clients">0</div>
+          <div class="s">סה"כ במערכת</div>
+        </div>
+        <div class="mc gold">
+          <div class="l">נכסים פעילים</div>
+          <div class="v" id="dm-props">0</div>
+          <div class="s">למכירה / להשכרה</div>
+        </div>
+        <div class="mc green">
+          <div class="l">לידים חדשים</div>
+          <div class="v" id="dm-leads">0</div>
+          <div class="s">לא טופלו</div>
+        </div>
+        <div class="mc red">
+          <div class="l">התראות דחופות</div>
+          <div class="v" id="dm-alerts">0</div>
+          <div class="s">פולואפ / בלעדיות</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-hd">לקוחות אחרונים <button class="btn btn-sm btn-primary" onclick="nav('clients')">כל הלקוחות</button></div>
+          <div id="dash-clients"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd">התראות קרובות <button class="btn btn-sm btn-primary" onclick="nav('alerts')">כולן</button></div>
+          <div id="dash-alerts"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">נכסים פעילים <button class="btn btn-sm btn-primary" onclick="nav('properties')">כל הנכסים</button></div>
+        <div id="dash-props"></div>
+      </div>
+    </div>
+
+    <!-- ═══ CLIENTS ═══ -->
+    <div class="page" id="p-clients">
+      <div class="card">
+        <div class="card-hd">
+          לקוחות CRM
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-sm btn-primary" onclick="openClientModal()">+ לקוח חדש</button>
+          </div>
+        </div>
+        <div class="sbar">
+          <input type="text" id="csrch" placeholder="🔍 חיפוש שם / טלפון / עיר / רחוב..." oninput="renderClients()"/>
+          <select id="ctype" onchange="renderClients()">
+            <option value="">כל הסוגים</option>
+            <option>מוכר</option><option>קונה</option><option>משכיר</option><option>שוכר</option>
+          </select>
+          <select id="cstat" onchange="renderClients()">
+            <option value="">כל הסטטוסים</option>
+            <option>פעיל</option><option>ממתין</option><option>סגור</option><option>לא רלוונטי</option>
+          </select>
+          <select id="ccity" onchange="renderClients()">
+            <option value="">כל הערים</option>
+            <option>חולון</option><option>בת ים</option><option>ראשון לציון</option>
+            <option>תל אביב</option><option>רמת גן</option><option>גבעתיים</option><option>אזור</option>
+          </select>
+        </div>
+        <div id="tbl-clients"></div>
+      </div>
+    </div>
+
+    <!-- ═══ PROPERTIES ═══ -->
+    <div class="page" id="p-properties">
+      <div class="card">
+        <div class="card-hd">
+          נכסים
+          <button class="btn btn-sm btn-primary" onclick="openPropModal()">+ נכס חדש</button>
+        </div>
+        <div class="sbar">
+          <input type="text" id="psrch" placeholder="🔍 חיפוש כתובת / עיר..." oninput="renderProps()"/>
+          <select id="pcity" onchange="renderProps()">
+            <option value="">כל הערים</option>
+            <option>חולון</option><option>בת ים</option><option>ראשון לציון</option>
+            <option>תל אביב</option><option>רמת גן</option><option>גבעתיים</option><option>אזור</option>
+          </select>
+          <select id="pstat" onchange="renderProps()">
+            <option value="">כל הסטטוסים</option>
+            <option>למכירה</option><option>להשכרה</option><option>נמכר</option>
+            <option>להשכרה מסחרית</option><option>למכירה מסחרי</option><option>הוסר</option>
+          </select>
+          <select id="prooms" onchange="renderProps()">
+            <option value="">כל מס' חדרים</option>
+            <option>1</option><option>1.5</option><option>2</option><option>2.5</option>
+            <option>3</option><option>3.5</option><option>4</option><option>4.5</option>
+            <option>5</option><option>5.5</option><option>6</option><option>6.5</option>
+            <option>7</option><option>8</option><option>9</option><option>10</option>
+          </select>
+          <select id="pproptype" onchange="renderProps()">
+            <option value="">כל סוגי הנכסים</option>
+            <option>דירה</option><option>קוטג' / דו משפחתי</option><option>פנטהאוז</option>
+            <option>דירת גן</option><option>דופלקס</option><option>סטודיו</option>
+            <option>משרד</option><option>חנות</option><option>מבנה תעשייתי</option><option>קרקע</option>
+          </select>
+          <select id="pfollowup" onchange="renderProps()">
+            <option value="">כל סטטוסי פולואפ</option>
+            <option>נקבעה פגישה</option><option>ממתין לפגישה</option><option>פגישה הושלמה</option>
+            <option>בהמתנה לתשובה</option><option>הצעת מחיר נשלחה</option>
+            <option>במשא ומתן</option><option>חוזה בהכנה</option><option>עסקה נסגרה</option>
+          </select>
+        </div>
+        <div id="tbl-props"></div>
+      </div>
+    </div>
+
+    <!-- ═══ ALERTS ═══ -->
+    <div class="page" id="p-alerts">
+      <div class="card" style="border-color:rgba(239,68,68,0.3)">
+        <div class="card-hd" style="color:var(--red)">🔴 דחוף — בלעדיות / פולואפ</div>
+        <div id="alerts-urgent"></div>
+      </div>
+      <div class="card" style="border-color:rgba(245,158,11,0.3)">
+        <div class="card-hd" style="color:var(--amber)">🟡 השבוע — מעקב ופגישות</div>
+        <div id="alerts-week"></div>
+      </div>
+      <div class="card">
+        <div class="card-hd">🎂 ימי הולדת וחגים קרובים</div>
+        <div id="alerts-bday"></div>
+      </div>
+      <div class="card" style="border:1px solid rgba(37,211,102,0.3)">
+        <div class="card-hd" style="color:var(--wa)">📅 שבת שלום — שליחה מהירה
+          <button class="btn btn-sm btn-wa" onclick="sendShabbatAll()">שלח לכולם 📲</button>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.7">
+          לחץ "שלח לכולם" לפתיחת וואטסאפ עם הודעת שבת שלום לכל לקוח בנפרד
+        </div>
+        <div id="shabbat-preview" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <!-- ═══ WHATSAPP ═══ -->
+    <div class="page" id="p-whatsapp">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-hd">📲 שלח הודעה ללקוח</div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>בחר לקוח</label>
+              <select id="waClient" onchange="selectWAClient()"></select>
+            </div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>תבנית מהירה</label>
+              <select id="waTpl" onchange="loadWATpl()">
+                <option value="">— בחר תבנית —</option>
+              </select>
+            </div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>הודעה</label>
+              <textarea id="waMsg" rows="7" placeholder="כתוב הודעה..."></textarea>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-wa" style="flex:1" onclick="sendWA()">📲 שלח בוואטסאפ</button>
+              <button class="btn btn-sm" onclick="copyWAMsg()">📋 העתק</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd">📝 משתנים דינמיים</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <button class="btn btn-sm" onclick="insertWAVar('{שם}')">👤 {שם}</button>
+              <button class="btn btn-sm" onclick="insertWAVar('{נכס}')">🏠 {נכס}</button>
+              <button class="btn btn-sm" onclick="insertWAVar('{מחיר}')">💰 {מחיר}</button>
+              <button class="btn btn-sm" onclick="insertWAVar('{תאריך}')">📅 {תאריך}</button>
+              <button class="btn btn-sm" onclick="insertWAVar('{סוכן}')">👔 רוי מגירה</button>
+              <button class="btn btn-sm" onclick="insertWAVar('{טלפון}')">📞 054-6661546</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="wa-phone">
+            <div class="wa-hbar">
+              <div class="wa-av" id="wa-avatar">?</div>
+              <div>
+                <div style="font-weight:700;font-size:13px" id="wa-name">בחר לקוח</div>
+                <div style="font-size:11px;opacity:.8" id="wa-phone-display">—</div>
+              </div>
+            </div>
+            <div class="wa-msgs" id="wa-msgs-preview">
+              <div style="text-align:center;color:rgba(255,255,255,.3);font-size:12px;margin:auto;padding:20px">בחר לקוח לצפייה בהיסטוריה</div>
+            </div>
+            <div class="wa-ibar">
+              <div style="font-size:11px;color:var(--text3)">תצוגה מקדימה</div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <div class="card-hd">📜 היסטוריית שליחות</div>
+            <div id="wa-hist" style="max-height:200px;overflow-y:auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ BULK ═══ -->
+    <div class="page" id="p-bulk">
+      <div class="card" style="border:1px solid rgba(37,211,102,0.3)">
+        <div class="card-hd" style="color:var(--wa)">📨 שליחה המונית בוואטסאפ
+          <small>כל לקוח מקבל הודעה אישית בנפרד</small>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+          <div class="fg">
+            <label>סנן לפי סוג לקוח</label>
+            <select id="bulk-type">
+              <option value="">כל הלקוחות</option>
+              <option>מוכר</option><option>קונה</option><option>משכיר</option><option>שוכר</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>סנן לפי עיר</label>
+            <select id="bulk-city">
+              <option value="">כל הערים</option>
+              <option>חולון</option><option>בת ים</option><option>ראשון לציון</option>
+              <option>תל אביב</option><option>רמת גן</option><option>גבעתיים</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:12px">
+          <label>תבנית מהירה</label>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+            <button class="btn btn-sm" onclick="loadBulkTpl('shabbat')">✨ שבת שלום</button>
+            <button class="btn btn-sm" onclick="loadBulkTpl('rosh_hashana')">🍯 שנה טובה</button>
+            <button class="btn btn-sm" onclick="loadBulkTpl('pesach')">🌿 חג פסח</button>
+            <button class="btn btn-sm" onclick="loadBulkTpl('chanuka')">🕎 חנוכה שמח</button>
+            <button class="btn btn-sm" onclick="loadBulkTpl('follow')">🔄 פולואפ כללי</button>
+            <button class="btn btn-sm" onclick="loadBulkTpl('new_prop')">🏠 נכס חדש</button>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:12px">
+          <label>תוכן ההודעה</label>
+          <textarea id="bulk-msg" rows="6" placeholder="הודעה לכולם — {שם} יוחלף בשם אישי של כל לקוח..."></textarea>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="previewBulk()">👁 תצוגה מקדימה</button>
+          <button class="btn btn-wa" onclick="sendBulk()">📲 שלח לכולם</button>
+          <span style="font-size:12px;color:var(--text3)" id="bulk-count"></span>
+        </div>
+      </div>
+      <div class="card" id="bulk-preview-card" style="display:none">
+        <div class="card-hd">👥 לקוחות שיקבלו הודעה</div>
+        <div id="bulk-preview-list"></div>
+      </div>
+    </div>
+
+    <!-- ═══ TEMPLATES ═══ -->
+    <div class="page" id="p-templates">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-hd">
+            📋 תבניות הודעה שמורות
+            <button class="btn btn-sm btn-primary" onclick="openTplModal()">+ תבנית חדשה</button>
+          </div>
+          <div id="tpl-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd">🎉 תבניות מיוחדות מובנות</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="tpl-card" onclick="useBulkTemplate('shabbat')">
+              <span>✨</span>
+              <div><div style="font-weight:700;font-size:13px">שבת שלום</div><div style="font-size:11px;color:var(--text3)">מחליף {שם} לשם אישי</div></div>
+            </div>
+            <div class="tpl-card" onclick="useBulkTemplate('rosh_hashana')">
+              <span>🍯</span>
+              <div><div style="font-weight:700;font-size:13px">ברכת שנה טובה</div><div style="font-size:11px;color:var(--text3)">ראש השנה</div></div>
+            </div>
+            <div class="tpl-card" onclick="useBulkTemplate('pesach')">
+              <span>🌿</span>
+              <div><div style="font-weight:700;font-size:13px">חג פסח שמח</div><div style="font-size:11px;color:var(--text3)">ברכת חג</div></div>
+            </div>
+            <div class="tpl-card" onclick="useBulkTemplate('chanuka')">
+              <span>🕎</span>
+              <div><div style="font-weight:700;font-size:13px">חנוכה שמח</div><div style="font-size:11px;color:var(--text3)">חג החנוכה</div></div>
+            </div>
+            <div class="tpl-card" onclick="useBulkTemplate('bday')">
+              <span>🎂</span>
+              <div><div style="font-weight:700;font-size:13px">יום הולדת שמח</div><div style="font-size:11px;color:var(--text3)">ברכה אישית</div></div>
+            </div>
+            <div class="tpl-card" onclick="useBulkTemplate('follow')">
+              <span>🔄</span>
+              <div><div style="font-weight:700;font-size:13px">פולואפ כללי</div><div style="font-size:11px;color:var(--text3)">בדיקת מצב</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CALENDAR ═══ -->
+    <div class="page" id="p-calendar">
+      <!-- Google Calendar Banner -->
+      <div class="card" style="background:linear-gradient(135deg,rgba(66,133,244,0.15),rgba(52,168,83,0.1));border-color:rgba(66,133,244,0.4)">
+        <div class="card-hd" style="color:#4285f4">📅 סנכרון עם Google Calendar
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-sm" style="background:#4285f4;color:#fff;border-color:#4285f4" onclick="exportAllICS()">⬇️ ייצא הכל ל-ICS</button>
+            <button class="btn btn-sm" style="background:#34a853;color:#fff;border-color:#34a853" onclick="openGCalImportGuide()">📥 ייבא מ-Google Calendar</button>
+            <button class="btn btn-sm" style="background:#ea4335;color:#fff;border-color:#ea4335" onclick="openGoogleCalendar()">🔗 פתח Google Calendar</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px">
+          <div style="background:rgba(66,133,244,0.1);border-radius:var(--r);padding:12px;border:1px solid rgba(66,133,244,0.3)">
+            <div style="font-weight:700;color:#4285f4;margin-bottom:6px">⬇️ שלב 1 — ייצא מהתוכנה</div>
+            <div style="color:var(--text2);line-height:1.6">לחץ "ייצא הכל ל-ICS" — יורד קובץ <strong>meetings.ics</strong> למחשב שלך</div>
+          </div>
+          <div style="background:rgba(52,168,83,0.1);border-radius:var(--r);padding:12px;border:1px solid rgba(52,168,83,0.3)">
+            <div style="font-weight:700;color:#34a853;margin-bottom:6px">📥 שלב 2 — ייבא ל-Google</div>
+            <div style="color:var(--text2);line-height:1.6">Google Calendar ← הגדרות ← ייבוא ← בחר קובץ ICS → ייבא</div>
+          </div>
+          <div style="background:rgba(234,67,53,0.1);border-radius:var(--r);padding:12px;border:1px solid rgba(234,67,53,0.3)">
+            <div style="font-weight:700;color:#ea4335;margin-bottom:6px">🔔 שלב 3 — אוטומטי</div>
+            <div style="color:var(--text2);line-height:1.6">Google Calendar ישלח לך תזכורות SMS/מייל אוטומטית לכל פגישה!</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--text3)">
+          💡 <strong>טיפ:</strong> כל פגישה חדשה — לחץ 📅 עליה כדי להוסיף ישירות ל-Google Calendar בלחיצה אחת
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px">
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="mini-cal" id="mini-cal"></div>
+          </div>
+          <div class="card">
+            <div class="card-hd">+ הוסף פגישה</div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>לקוח</label>
+              <select id="meet-client"></select>
+            </div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>תאריך ושעה</label>
+              <input id="meet-datetime" type="datetime-local"/>
+            </div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>סוג פגישה</label>
+              <select id="meet-type">
+                <option>פגישה ראשונית</option><option>הצגת נכס</option>
+                <option>חתימת הסכם</option><option>מעקב</option><option>שיחת טלפון</option>
+              </select>
+            </div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>משך (דקות)</label>
+              <select id="meet-duration">
+                <option value="30">30 דקות</option>
+                <option value="60" selected>שעה</option>
+                <option value="90">שעה וחצי</option>
+                <option value="120">שעתיים</option>
+              </select>
+            </div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>מיקום</label>
+              <input id="meet-address" placeholder="כתובת / זום..."/>
+            </div>
+            <div class="fg" style="margin-bottom:10px">
+              <label>הערות</label>
+              <textarea id="meet-notes" rows="2"></textarea>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="addMeeting()">💾 שמור פגישה</button>
+            <button class="btn btn-sm" style="width:100%;justify-content:center;margin-top:6px;background:#4285f4;color:#fff;border-color:#4285f4" onclick="exportAllICS()">📅 ייצא לGoogle Calendar (ICS)</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd">📅 פגישות קרובות
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-sm" style="background:#4285f4;color:#fff;border-color:#4285f4" onclick="exportAllICS()">⬇️ ייצא ICS</button>
+              <button class="btn btn-sm" style="background:var(--surface2)" onclick="openGoogleCalendar()">🔗 Google Calendar</button>
+            </div>
+          </div>
+          <div id="meetings-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ LEADS ═══ -->
+    <div class="page" id="p-leads">
+      <div class="mrow">
+        <div class="mc red"><div class="l">חדשים</div><div class="v" id="ld-new">0</div></div>
+        <div class="mc amber"><div class="l">בטיפול</div><div class="v" id="ld-active">0</div></div>
+        <div class="mc green"><div class="l">הפכו ללקוח</div><div class="v" id="ld-conv">0</div></div>
+        <div class="mc"><div class="l">סה"כ</div><div class="v" id="ld-total">0</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd">
+          ⚡ לידים
+          <button class="btn btn-sm btn-primary" onclick="openLeadModal()">+ ליד חדש</button>
+        </div>
+        <div class="sbar">
+          <select id="ld-filter-src" onchange="renderLeads()">
+            <option value="">כל המקורות</option>
+            <option>פייסבוק</option><option>אינסטגרם</option><option>המלצה</option><option>יד 2</option><option>אחר</option>
+          </select>
+          <select id="ld-filter-stat" onchange="renderLeads()">
+            <option value="">כל הסטטוסים</option>
+            <option>חדש</option><option>יצרתי קשר</option><option>בטיפול</option><option>הפך ללקוח</option>
+          </select>
+        </div>
+        <div id="leads-list"></div>
+      </div>
+    </div>
+
+    <!-- ═══ PUBLISHER ═══ -->
+    <div class="page" id="p-publisher">
+      <div class="card" style="background:linear-gradient(135deg,rgba(24,119,242,0.15),rgba(79,110,247,0.1));border-color:rgba(79,110,247,0.3)">
+        <div class="card-hd" style="color:var(--primary)">📱 פרסום לרשתות חברתיות
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sm" style="background:#1877f2;color:#fff;border-color:#1877f2" onclick="openFB()">📘 פייסבוק</button>
+            <button class="btn btn-sm" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;border:none" onclick="openIG()">📸 אינסטגרם</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+          <div class="fg">
+            <label>נכס מה-CRM</label>
+            <select id="pub-prop" onchange="loadPropForPost()">
+              <option value="">— בחר נכס —</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>סוג פוסט</label>
+            <select id="pub-type" onchange="buildPost()">
+              <option>למכירה</option><option>להשכרה</option><option>נמכר!</option><option>מחפשים</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>כתובת</label>
+            <input id="pub-street" placeholder="רחוב ומספר"/>
+          </div>
+          <div class="fg">
+            <label>עיר</label>
+            <input id="pub-city" value="חולון"/>
+          </div>
+          <div class="fg">
+            <label>חדרים</label>
+            <input id="pub-rooms" placeholder="4 חדרים"/>
+          </div>
+          <div class="fg">
+            <label>שטח מ"ר</label>
+            <input id="pub-size" type="number" placeholder="85"/>
+          </div>
+          <div class="fg">
+            <label>מחיר</label>
+            <input id="pub-price" type="number" placeholder="1800000"/>
+          </div>
+          <div class="fg">
+            <label>קומה</label>
+            <input id="pub-floor" placeholder="3/8"/>
+          </div>
+          <div class="fg full">
+            <label>מאפיינים</label>
+            <div class="checks" id="pub-feats">
+              <label><input type="checkbox" value="מעלית"> מעלית</label>
+              <label><input type="checkbox" value="חניה"> חניה</label>
+              <label><input type="checkbox" value="ממ&quot;ד"> ממ"ד</label>
+              <label><input type="checkbox" value="מרפסת"> מרפסת</label>
+              <label><input type="checkbox" value="שיפוץ מלא"> שיפוץ מלא</label>
+              <label><input type="checkbox" value="נוף פתוח"> נוף פתוח</label>
+            </div>
+          </div>
+          <div class="fg full">
+            <label>הערה נוספת</label>
+            <input id="pub-extra" placeholder="מידע נוסף..."/>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="buildPost()">✨ צור פוסט</button>
+      </div>
+      <div class="card" id="post-preview-card" style="display:none">
+        <div class="card-hd">📄 תצוגת פוסט
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sm btn-primary" onclick="copyPost()">📋 העתק</button>
+            <button class="btn btn-sm btn-wa" onclick="sharePostWA()">📲 וואטסאפ</button>
+          </div>
+        </div>
+        <div id="pub-post-display" style="background:var(--surface2);border-radius:var(--r);padding:16px;font-size:13px;line-height:1.8;white-space:pre-wrap;direction:rtl"></div>
+        <div style="margin-top:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:8px">האשטגים</div>
+          <div id="pub-hashtags" style="font-size:11px;color:var(--text2);line-height:2;direction:ltr;text-align:right"></div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="card-hd">📘 קבוצות פייסבוק
+            <button class="btn btn-sm btn-primary" onclick="openAllGroups()">🚀 פרסם בכולן</button>
+          </div>
+          <div id="pub-groups"></div>
+          <button class="btn btn-sm" style="margin-top:8px" onclick="addGroup()">+ הוסף קבוצה</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CLIENT MODAL -->
+<div class="overlay" id="m-client">
+<div class="modal">
+  <div class="modal-hd">
+    <span id="clientModalTitle">לקוח חדש</span>
+    <span class="x" onclick="closeModal('m-client')">×</span>
+  </div>
+  <input type="hidden" id="c_id"/>
+  <div class="fgrid">
+    <div class="fg"><label>שם פרטי *</label><input id="c_first" placeholder="ישראל"/></div>
+    <div class="fg"><label>שם משפחה</label><input id="c_last" placeholder="ישראלי"/></div>
+    <div class="fg"><label>טלפון *</label><input id="c_phone" placeholder="054-XXXXXXX"/></div>
+    <div class="fg"><label>אימייל</label><input id="c_email" type="email" placeholder="email@example.com"/></div>
+    <div class="fg">
+      <label>סוג לקוח</label>
+      <select id="c_type">
+        <option>מוכר</option><option>קונה</option><option>משכיר</option><option>שוכר</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>סטטוס</label>
+      <select id="c_status">
+        <option>פעיל</option><option>ממתין</option><option>סגור</option><option>לא רלוונטי</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>עיר</label>
+      <select id="c_city">
+        <option>חולון</option><option>בת ים</option><option>ראשון לציון</option>
+        <option>תל אביב</option><option>רמת גן</option><option>גבעתיים</option><option>אזור</option><option>אחר</option>
+      </select>
+    </div>
+    <div class="fg"><label>רחוב / שכונה</label><input id="c_street" placeholder="רח' הרצל 52"/></div>
+    <div class="fg"><label>תקציב / מחיר (₪)</label><input id="c_budget" placeholder="1,800,000"/></div>
+    <div class="fg">
+      <label>חדרים (כתוב חופשי: 4, 4.5...)</label>
+      <input id="c_rooms" placeholder="לדוג': 3, 4, 4.5, 5..." list="c-rooms-suggestions"/>
+      <datalist id="c-rooms-suggestions">
+        <option value="1"/><option value="1.5"/><option value="2"/><option value="2.5"/>
+        <option value="3"/><option value="3.5"/><option value="4"/><option value="4.5"/>
+        <option value="5"/><option value="5.5"/><option value="6"/><option value="6.5"/>
+        <option value="7"/><option value="8"/><option value="9"/><option value="10"/>
+      </datalist>
+    </div>
+    <div class="fg"><label>יום הולדת</label><input id="c_birthday" type="date"/></div>
+    <div class="fg"><label>תאריך פולואפ</label><input id="c_followup" type="date"/></div>
+    <div class="fg">
+      <label>סטטוס פולואפ</label>
+      <select id="c_followup_status">
+        <option value="">— בחר —</option>
+        <option>שוחח ← מעוניין</option>
+        <option>שוחח ← לא מעוניין</option>
+        <option>שוחח ← שמור קשר</option>
+        <option>לא ענה — נסה שוב</option>
+        <option>בהמתנה לתשובה</option>
+      </select>
+    </div>
+    <div class="fg"><label>בלעדיות עד</label><input id="c_exclusive" type="date"/></div>
+    <div class="fg full"><label>הערות</label><textarea id="c_notes" rows="3" placeholder="מידע חשוב, דרישות, העדפות..."></textarea></div>
+    <div class="fg full"><label>תזכורת / הערה פנימית</label><input id="c_reminder" placeholder="לדוג': לחזור בסוף חודש"/></div>
+  </div>
+  <div class="factions">
+    <button class="btn" onclick="closeModal('m-client')">ביטול</button>
+    <button class="btn btn-wa" onclick="saveClientAndWA()">💾 שמור + וואטסאפ</button>
+    <button class="btn btn-primary" onclick="saveClient()">💾 שמור לקוח</button>
+  </div>
+</div>
+</div>
+
+<!-- PROPERTY MODAL -->
+<div class="overlay" id="m-prop">
+<div class="modal">
+  <div class="modal-hd">
+    <span id="propModalTitle">נכס חדש</span>
+    <span class="x" onclick="closeModal('m-prop')">×</span>
+  </div>
+  <input type="hidden" id="p_id"/>
+  <div class="fgrid">
+    <div class="fg"><label>רחוב ומספר *</label><input id="p_street" placeholder="רח' הרצל 12"/></div>
+    <div class="fg">
+      <label>עיר *</label>
+      <select id="p_city">
+        <option>חולון</option><option>בת ים</option><option>ראשון לציון</option>
+        <option>תל אביב</option><option>רמת גן</option><option>גבעתיים</option><option>אזור</option>
+      </select>
+    </div>
+    <div class="fg"><label>שטח מ"ר</label><input id="p_size" type="number" placeholder="80"/></div>
+    <div class="fg">
+      <label>חדרים (כתוב חופשי: 4, 4.5, 5 וכו')</label>
+      <input id="p_rooms" placeholder="לדוג': 4, 4.5, 5, 6.5..." list="rooms-suggestions"/>
+      <datalist id="rooms-suggestions">
+        <option value="1"/><option value="1.5"/><option value="2"/><option value="2.5"/>
+        <option value="3"/><option value="3.5"/><option value="4"/><option value="4.5"/>
+        <option value="5"/><option value="5.5"/><option value="6"/><option value="6.5"/>
+        <option value="7"/><option value="7.5"/><option value="8"/><option value="9"/><option value="10"/>
+      </datalist>
+    </div>
+    <div class="fg">
+      <label>קומה</label>
+      <input id="p_floor" type="number" placeholder="3" min="0" max="100"/>
+    </div>
+    <div class="fg">
+      <label>קומות בבניין (כתוב חופשי)</label>
+      <input id="p_total" placeholder="לדוג': 8, 35, 50..." list="floors-suggestions"/>
+      <datalist id="floors-suggestions">
+        <option value="3"/><option value="4"/><option value="5"/><option value="6"/>
+        <option value="7"/><option value="8"/><option value="10"/><option value="12"/>
+        <option value="15"/><option value="20"/><option value="25"/><option value="30"/>
+        <option value="35"/><option value="40"/><option value="45"/><option value="50"/>
+      </datalist>
+    </div>
+    <div class="fg"><label>מחיר (₪)</label><input id="p_price" type="number" placeholder="1800000" oninput="calcSqm()"/></div>
+    <div class="fg">
+      <label>סטטוס</label>
+      <select id="p_status">
+        <option>למכירה</option><option>להשכרה</option><option>נמכר</option>
+        <option>להשכרה מסחרית</option><option>למכירה מסחרי</option><option>הוסר</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>סוג נכס</label>
+      <select id="p_proptype">
+        <option>דירה</option><option>קוטג' / דו משפחתי</option><option>פנטהאוז</option>
+        <option>דירת גן</option><option>דופלקס</option><option>סטודיו</option>
+        <option>משרד</option><option>חנות</option><option>מחסן / לוגיסטיקה</option>
+        <option>מבנה תעשייתי</option><option>קרקע</option><option>אחר</option>
+      </select>
+    </div>
+    <div class="fg"><label>מחיר/מ"ר</label><input id="p_sqm" readonly style="background:var(--surface3)"/></div>
+    <div class="fg"><label>בעלים (לקוח)</label><select id="p_owner"></select></div>
+    <div class="fg">
+      <label>סטטוס פולואפ</label>
+      <select id="p_followup_status">
+        <option value="">— בחר —</option>
+        <option>נקבעה פגישה</option>
+        <option>ממתין לפגישה</option>
+        <option>פגישה הושלמה</option>
+        <option>בהמתנה לתשובה</option>
+        <option>מעוניין — ממתין לאישור</option>
+        <option>לא מעוניין כרגע</option>
+        <option>הצעת מחיר נשלחה</option>
+        <option>במשא ומתן</option>
+        <option>חוזה בהכנה</option>
+        <option>עסקה נסגרה</option>
+        <option>לא רלוונטי</option>
+      </select>
+    </div>
+    <div class="fg"><label>תאריך פולואפ</label><input id="p_followup_date" type="date"/></div>
+    <div class="fg full">
+      <label>מאפייני הנכס</label>
+      <div class="checks" id="pfeats">
+        <label><input type="checkbox" value="מעלית"> מעלית</label>
+        <label><input type="checkbox" value="חניה"> חניה</label>
+        <label><input type="checkbox" value="ממ&quot;ד"> ממ"ד</label>
+        <label><input type="checkbox" value="שיפוץ מלא"> שיפוץ מלא</label>
+        <label><input type="checkbox" value="מרפסת"> מרפסת</label>
+        <label><input type="checkbox" value="מחסן"> מחסן</label>
+        <label><input type="checkbox" value="נוף פתוח"> נוף פתוח</label>
+        <label><input type="checkbox" value="בניין חדש"> בניין חדש</label>
+        <label><input type="checkbox" value="גינה פרטית"> גינה פרטית</label>
+        <label><input type="checkbox" value="נגיש לנכים"> נגיש לנכים</label>
+        <label><input type="checkbox" value="מיזוג מרכזי"> מיזוג מרכזי</label>
+        <label><input type="checkbox" value="דוד שמש"> דוד שמש</label>
+      </div>
+    </div>
+    <div class="fg full"><label>הערות</label><textarea id="p_notes" rows="3"></textarea></div>
+  </div>
+  <div class="factions">
+    <button class="btn" onclick="closeModal('m-prop')">ביטול</button>
+    <button class="btn btn-primary" onclick="saveProp()">💾 שמור נכס</button>
+  </div>
+</div>
+</div>
+
+<!-- TEMPLATE MODAL -->
+<div class="overlay" id="m-tpl">
+<div class="modal">
+  <div class="modal-hd">
+    <span id="tplModalTitle">תבנית חדשה</span>
+    <span class="x" onclick="closeModal('m-tpl')">×</span>
+  </div>
+  <input type="hidden" id="tpl_id"/>
+  <div class="fgrid">
+    <div class="fg full"><label>שם התבנית *</label><input id="tpl_name" placeholder="לדוג' ברוכים הבאים"/></div>
+    <div class="fg full">
+      <label>תוכן ההודעה *</label>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px">
+        <button type="button" class="btn btn-sm" onclick="insertTplVar('{שם}')">👤 {שם}</button>
+        <button type="button" class="btn btn-sm" onclick="insertTplVar('{נכס}')">🏠 {נכס}</button>
+        <button type="button" class="btn btn-sm" onclick="insertTplVar('{מחיר}')">💰 {מחיר}</button>
+        <button type="button" class="btn btn-sm" onclick="insertTplVar('{תאריך}')">📅 {תאריך}</button>
+      </div>
+      <textarea id="tpl_body" rows="8" placeholder="תוכן התבנית...&#10;{שם} — שם הלקוח&#10;{נכס} — כתובת הנכס&#10;{מחיר} — מחיר&#10;{תאריך} — תאריך היום"></textarea>
+    </div>
+    <div class="fg full">
+      <label>תצוגה מקדימה</label>
+      <div id="tpl-preview-box" style="background:var(--surface2);border-radius:var(--r);padding:12px;font-size:12px;line-height:1.7;white-space:pre-wrap;min-height:60px;direction:rtl;color:var(--text2)"></div>
+    </div>
+  </div>
+  <div class="factions">
+    <button class="btn" onclick="closeModal('m-tpl')">ביטול</button>
+    <button class="btn btn-primary" onclick="saveTpl()">💾 שמור תבנית</button>
+  </div>
+</div>
+</div>
+
+<!-- LEAD MODAL -->
+<div class="overlay" id="m-lead">
+<div class="modal">
+  <div class="modal-hd">
+    <span id="leadModalTitle">ליד חדש</span>
+    <span class="x" onclick="closeModal('m-lead')">×</span>
+  </div>
+  <input type="hidden" id="lead_id"/>
+  <div class="fgrid">
+    <div class="fg"><label>שם מלא *</label><input id="ld_name" placeholder="ישראל ישראלי"/></div>
+    <div class="fg"><label>טלפון *</label><input id="ld_phone" type="tel" placeholder="054-XXXXXXX"/></div>
+    <div class="fg"><label>אימייל</label><input id="ld_email" type="email"/></div>
+    <div class="fg">
+      <label>מקור</label>
+      <select id="ld_src">
+        <option>פייסבוק</option><option>אינסטגרם</option><option>המלצה</option>
+        <option>יד 2</option><option>מדלן</option><option>Google</option><option>אחר</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>סטטוס</label>
+      <select id="ld_status">
+        <option>חדש</option><option>יצרתי קשר</option><option>בטיפול</option>
+        <option>הפך ללקוח</option><option>לא רלוונטי</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>עיר</label>
+      <select id="ld_city">
+        <option value="">לא ידוע</option>
+        <option>חולון</option><option>בת ים</option><option>ראשון לציון</option>
+        <option>תל אביב</option><option>רמת גן</option><option>גבעתיים</option>
+      </select>
+    </div>
+    <div class="fg"><label>כתובת / שכונה</label><input id="ld_address" placeholder="רח' הרצל..."/></div>
+    <div class="fg">
+      <label>דחיפות</label>
+      <select id="ld_urgency">
+        <option value="3">🔴 דחוף — מוכן עכשיו</option>
+        <option value="2" selected>🟡 בינוני — 1-3 חודשים</option>
+        <option value="1">🟢 נמוך — עתידי</option>
+      </select>
+    </div>
+    <div class="fg"><label>תאריך מעקב</label><input id="ld_followup" type="date"/></div>
+    <div class="fg full"><label>הערות</label><textarea id="ld_notes" rows="3" placeholder="מה הלקוח אמר, מה הוא מחפש..."></textarea></div>
+  </div>
+  <div class="factions">
+    <button class="btn" onclick="closeModal('m-lead')">ביטול</button>
+    <button class="btn btn-wa" onclick="saveLeadWA()">💾 שמור + וואטסאפ</button>
+    <button class="btn btn-primary" onclick="saveLead()">💾 שמור ליד</button>
+  </div>
+</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  DATA LAYER — localStorage
+// ══════════════════════════════════════════
+const LS={
+  get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}},
+  set(k,v){localStorage.setItem(k,JSON.stringify(v))}
+};
+
+let clients  = LS.get('crm2_clients')  || [];
+let props    = LS.get('crm2_props')    || [];
+let waHist   = LS.get('crm2_wa')       || [];
+let waConvs  = LS.get('crm2_convs')    || {};
+let meetings = LS.get('crm2_meetings') || [];
+let leads    = LS.get('crm2_leads')    || [];
+let templates= LS.get('crm2_tpls')     || [];
+let pubGroups= LS.get('crm2_groups')   || [
+  {id:1,name:'חולון — דירות למכירה',url:'https://www.facebook.com/groups/'},
+  {id:2,name:'בת ים — נדל"ן',url:'https://www.facebook.com/groups/'},
+  {id:3,name:'ראשון לציון — דירות',url:'https://www.facebook.com/groups/'}
+];
+
+function saveClients(){LS.set('crm2_clients',clients);updateCounts()}
+function saveProps()  {LS.set('crm2_props',props);updateCounts()}
+function saveWA()     {LS.set('crm2_wa',waHist);LS.set('crm2_convs',waConvs)}
+function saveMeetings(){LS.set('crm2_meetings',meetings)}
+function saveLeads()  {LS.set('crm2_leads',leads);updateLeadCounts()}
+function saveTpls()   {LS.set('crm2_tpls',templates)}
+function saveGroups() {LS.set('crm2_groups',pubGroups)}
+
+function uid(){return Date.now()+Math.floor(Math.random()*9999)}
+
+// Seed demo data from old CRM
+if(!clients.length){
+  clients=[
+    {id:1,first:'דוד',last:'כהן',phone:'054-1234567',email:'david@gmail.com',type:'מוכר',city:'חולון',street:"רח' סוקולוב 45",budget:'1,750,000',rooms:'3',status:'פעיל',notes:'דירת 3 חדרים, רוצה למכור תוך 3 חודשים. מוכן להוריד מחיר.',followup:'',exclusive:'',birthday:'',followup_status:'',reminder:''},
+    {id:2,first:'מרים',last:'לוי',phone:'052-9876543',email:'miriam@gmail.com',type:'קונה',city:'רמת גן',street:'',budget:'2,200,000',rooms:'4',status:'פעיל',notes:'מחפשת 4 חדרים עם מעלית, קרוב לגני תקווה',followup:'',exclusive:'',birthday:'',followup_status:'',reminder:''},
+    {id:3,first:'אבי',last:'שפירא',phone:'050-5556789',email:'avi@walla.co.il',type:'מוכר',city:'בת ים',street:"רח' יורדי הים 8",budget:'1,400,000',rooms:'5',status:'סגור',notes:'',followup:'',exclusive:'',birthday:'',followup_status:'',reminder:''},
+    {id:4,first:'רחל',last:'ברקוביץ',phone:'053-7778888',email:'',type:'קונה',city:'תל אביב',street:'',budget:'3,500,000',rooms:'3',status:'פעיל',notes:'שכונת נווה צדק / פלורנטין',followup:'',exclusive:'',birthday:'',followup_status:'',reminder:''},
+    {id:5,first:'יוסי',last:'גולדברג',phone:'058-1112222',email:'yossi@biz.co.il',type:'משכיר',city:'חולון',street:"רח' בלפור 22",budget:'5,500',rooms:'3',status:'פעיל',notes:'דירה להשכרה כולל חניה',followup:'',exclusive:'',birthday:'',followup_status:'',reminder:''}
+  ];
+  saveClients();
+}
+if(!props.length){
+  props=[
+    {id:1,street:"רח' סוקולוב 45",city:'חולון',size:78,rooms:'3',floor:3,total:7,price:1750000,status:'למכירה',owner:1,features:['מעלית','ממ"ד'],notes:'מצב טוב'},
+    {id:2,street:"רח' יורדי הים 8",city:'בת ים',size:110,rooms:'5',floor:5,total:9,price:1390000,status:'נמכר',owner:3,features:['מעלית','חניה','מרפסת'],notes:''},
+    {id:3,street:"רח' הרצל 88",city:'חולון',size:85,rooms:'4',floor:2,total:6,price:1900000,status:'למכירה',owner:0,features:['ממ"ד','מרפסת','מחסן'],notes:'שיפוץ חלקי 2023'},
+    {id:4,street:"רח' בלפור 22",city:'חולון',size:72,rooms:'3',floor:4,total:8,price:5500,status:'להשכרה',owner:5,features:['מעלית','חניה'],notes:''},
+    {id:5,street:"רח' ז'בוטינסקי 31",city:'רמת גן',size:120,rooms:'5',floor:8,total:12,price:3200000,status:'למכירה',owner:0,features:['מעלית','חניה','ממ"ד','נוף פתוח','בניין חדש'],notes:'פרויקט חדש'}
+  ];
+  saveProps();
+}
+if(!templates.length){
+  templates=[
+    {id:1,name:'ברוכים הבאים',body:'שלום {שם},\n\nשמי רוי מגירה מ-RE/MAX צוות רוזנברגר.\nשמחתי ליצור קשר!\n\nאשמח לעזור לך בכל שאלה בנוגע לנדל"ן.\n\nבברכה,\nרוי מגירה | 054-6661546'},
+    {id:2,name:'הצגת נכס',body:'שלום {שם},\n\nהכנתי עבורך מידע על נכס ב{נכס}.\n\nנשמח לתאם הצגה נוחה לך.\n\nבברכה,\nרוי מגירה | RE/MAX | 054-6661546'},
+    {id:3,name:'מעקב / פולואפ',body:'שלום {שם},\n\nרציתי לבדוק איך מתקדמים הדברים?\nיש לך שאלות או עדכונים?\n\nאני כאן לכל צורך.\n\nרוי מגירה | 054-6661546'},
+    {id:4,name:'הצעת מחיר',body:'שלום {שם},\n\nלגבי הנכס ב{נכס} — המחיר המבוקש הוא {מחיר}.\n\nנשמח לדון בתנאים.\n\nבברכה,\nרוי מגירה | 054-6661546'}
+  ];
+  saveTpls();
+}
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+function fmtPrice(n){if(!n||n===0)return '—';return '₪'+Number(n).toLocaleString()}
+function initials(c){return ((c.first||'')[0]||'?')+((c.last||'')[0]||'')}
+function getClient(id){return clients.find(c=>c.id===id)}
+function getProp(id){return props.find(p=>p.id===id)}
+const typeColor={מוכר:'b-gold',קונה:'b-primary',משכיר:'b-green',שוכר:'b-amber'};
+const statColor={פעיל:'b-green',ממתין:'b-amber',סגור:'b-gray',נמכר:'b-gray','לא רלוונטי':'b-gray'};
+const propStatColor={'למכירה':'b-primary','להשכרה':'b-green','נמכר':'b-gray','הוסר':'b-red'};
+
+function featsHtml(arr){
+  if(!arr||!arr.length)return '<span style="color:var(--text3);font-size:10px">—</span>';
+  return arr.map(f=>`<span class="feat-tag yes">✓ ${f}</span>`).join(' ');
+}
+
+let toastTimer;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+function updateCounts(){
+  const cc=clients.filter(c=>c.status==='פעיל').length;
+  const cbadge=document.getElementById('cnt-clients');
+  if(cbadge){cbadge.textContent=cc;cbadge.style.display=cc?'':'none'}
+}
+function updateLeadCounts(){
+  const n=leads.filter(l=>l.status==='חדש').length;
+  const b=document.getElementById('cnt-leads');
+  if(b){b.textContent=n||'';b.style.display=n?'':'none'}
+  const eNew=document.getElementById('ld-new'),eAct=document.getElementById('ld-active'),eConv=document.getElementById('ld-conv'),eTot=document.getElementById('ld-total');
+  if(eNew) eNew.textContent=n;
+  if(eAct) eAct.textContent=leads.filter(l=>l.status==='בטיפול'||l.status==='יצרתי קשר').length;
+  if(eConv) eConv.textContent=leads.filter(l=>l.status==='הפך ללקוח').length;
+  if(eTot) eTot.textContent=leads.length;
+  const dmLeads=document.getElementById('dm-leads');
+  if(dmLeads) dmLeads.textContent=n;
+}
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+const pageNames={
+  dashboard:'לוח בקרה',clients:'לקוחות CRM',properties:'נכסים',
+  alerts:'התראות ופולואפ',whatsapp:'וואטסאפ',bulk:'שליחה המונית',
+  templates:'תבניות הודעה',calendar:'יומן פגישות',leads:'לידים',publisher:'פרסום רשתות חברתיות'
+};
+
+function nav(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav').forEach(n=>n.classList.remove('on'));
+  document.getElementById('p-'+name).classList.add('on');
+  document.getElementById('pageTitle').textContent=pageNames[name]||name;
+  const navEl=document.getElementById('nav-'+name);
+  if(navEl) navEl.classList.add('on');
+  if(name==='dashboard') renderDash();
+  if(name==='clients') renderClients();
+  if(name==='properties') renderProps();
+  if(name==='alerts'){renderAlerts();renderShabbatPreview()}
+  if(name==='whatsapp'){fillWASelect();fillWATplSelect();renderWAHist()}
+  if(name==='bulk'){updateBulkCount()}
+  if(name==='templates') renderTpls();
+  if(name==='calendar'){fillMeetingClients();renderMeetings();renderMiniCal()}
+  if(name==='leads') renderLeads();
+  if(name==='publisher'){fillPubPropSelect();renderPubGroups()}
+}
+
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+});
+
+// ══════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════
+function renderDash(){
+  document.getElementById('dm-clients').textContent=clients.filter(c=>c.status==='פעיל').length;
+  document.getElementById('dm-props').textContent=props.filter(p=>p.status==='למכירה'||p.status==='להשכרה').length;
+  updateLeadCounts();
+
+  // Recent clients
+  const dc=document.getElementById('dash-clients');
+  const recent=clients.slice(-5).reverse();
+  if(!recent.length){dc.innerHTML='<div class="empty"><p>אין לקוחות עדיין</p></div>';return;}
+  dc.innerHTML=`<table class="tbl"><thead><tr><th>שם</th><th>טלפון</th><th>סוג</th><th>סטטוס</th><th></th></tr></thead><tbody>
+  ${recent.map(c=>`<tr>
+    <td><strong>${c.first} ${c.last}</strong><div style="font-size:10px;color:var(--text3)">${c.city}${c.street?' · '+c.street:''}</div></td>
+    <td><a href="tel:${c.phone}" style="color:var(--primary);text-decoration:none">${c.phone}</a></td>
+    <td><span class="b ${typeColor[c.type]||'b-gray'}">${c.type}</span></td>
+    <td><span class="b ${statColor[c.status]||'b-gray'}">${c.status}</span></td>
+    <td class="acts"><button class="btn btn-sm btn-wa" onclick="waForClient(${c.id})">📲</button></td>
+  </tr>`).join('')}</tbody></table>`;
+
+  // Dash alerts
+  const da=document.getElementById('dash-alerts');
+  const now=new Date();
+  const urgentItems=[];
+  clients.forEach(c=>{
+    if(c.exclusive){
+      const excl=new Date(c.exclusive);
+      const days=Math.round((excl-now)/(1000*60*60*24));
+      if(days>=0&&days<=7) urgentItems.push({emoji:'⚠️',text:`בלעדיות של ${c.first} ${c.last} מסתיימת בעוד ${days} ימים`,color:'var(--red)'});
+    }
+    if(c.followup){
+      const fu=new Date(c.followup);
+      const days=Math.round((fu-now)/(1000*60*60*24));
+      if(days<=1&&days>=-1) urgentItems.push({emoji:'🔄',text:`פולואפ: ${c.first} ${c.last}`,color:'var(--amber)'});
+    }
+    if(c.birthday){
+      const bd=new Date(c.birthday);
+      const thisYear=new Date(now.getFullYear(),bd.getMonth(),bd.getDate());
+      const days=Math.round((thisYear-now)/(1000*60*60*24));
+      if(days>=0&&days<=3) urgentItems.push({emoji:'🎂',text:`יום הולדת: ${c.first} ${c.last}!`,color:'var(--gold)'});
+    }
+  });
+  const alertBadge=document.getElementById('alert-badge');
+  if(alertBadge) alertBadge.textContent=urgentItems.length||'';
+  document.getElementById('dm-alerts').textContent=urgentItems.length;
+  if(!urgentItems.length){da.innerHTML='<div class="empty"><p>✅ אין התראות דחופות</p></div>';return;}
+  da.innerHTML=urgentItems.slice(0,5).map(a=>`
+    <div class="alert-item"><span style="font-size:18px">${a.emoji}</span>
+    <div style="font-size:12px;color:${a.color};font-weight:600">${a.text}</div></div>`).join('');
+
+  // Dash props
+  const dp=document.getElementById('dash-props');
+  const rprops=props.filter(p=>p.status==='למכירה'||p.status==='להשכרה').slice(0,6);
+  if(!rprops.length){dp.innerHTML='<div class="empty"><p>אין נכסים פעילים</p></div>';return;}
+  dp.innerHTML=`<table class="tbl"><thead><tr><th>כתובת</th><th>עיר</th><th>חד'</th><th>מ"ר</th><th>מחיר</th><th>סטטוס</th><th>בעלים</th></tr></thead><tbody>
+  ${rprops.map(p=>{
+    const owner=p.owner?getClient(p.owner):null;
+    return`<tr>
+      <td><strong>${p.street}</strong></td><td>${p.city}</td>
+      <td style="text-align:center">${p.rooms}</td><td style="text-align:center">${p.size||'—'}</td>
+      <td><strong>${fmtPrice(p.price)}</strong></td>
+      <td><span class="b ${propStatColor[p.status]||'b-gray'}">${p.status}</span></td>
+      <td style="font-size:11px">${owner?owner.first+' '+owner.last:'—'}</td>
+    </tr>`;
+  }).join('')}</tbody></table>`;
+}
+
+// ══════════════════════════════════════════
+//  CLIENTS
+// ══════════════════════════════════════════
+function openClientModal(){
+  document.getElementById('c_id').value='';
+  document.getElementById('clientModalTitle').textContent='לקוח חדש';
+  ['c_first','c_last','c_phone','c_email','c_street','c_budget','c_notes','c_followup','c_exclusive','c_birthday','c_reminder'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('c_type').value='מוכר';
+  document.getElementById('c_status').value='פעיל';
+  document.getElementById('c_city').value='חולון';
+  document.getElementById('c_rooms').value='3';
+  document.getElementById('c_followup_status').value='';
+  openModal('m-client');
+}
+function editClient(id){
+  const c=getClient(id);if(!c)return;
+  document.getElementById('c_id').value=c.id;
+  document.getElementById('clientModalTitle').textContent='עריכת לקוח';
+  ['first','last','phone','email','type','status','city','street','budget','rooms','notes','followup','exclusive','birthday','followup_status','reminder'].forEach(f=>{
+    const el=document.getElementById('c_'+f);if(el) el.value=c[f]||'';
+  });
+  openModal('m-client');
+}
+function saveClient(){
+  const first=document.getElementById('c_first').value.trim();
+  const phone=document.getElementById('c_phone').value.trim();
+  if(!first||!phone){toast('⚠️ שם פרטי וטלפון הם שדות חובה');return;}
+  const eid=document.getElementById('c_id').value;
+  const obj={
+    id:eid?parseInt(eid):uid(),
+    first,last:document.getElementById('c_last').value.trim(),phone,
+    email:document.getElementById('c_email').value.trim(),
+    type:document.getElementById('c_type').value,
+    status:document.getElementById('c_status').value,
+    city:document.getElementById('c_city').value,
+    street:document.getElementById('c_street').value.trim(),
+    budget:document.getElementById('c_budget').value.trim(),
+    rooms:document.getElementById('c_rooms').value,
+    notes:document.getElementById('c_notes').value.trim(),
+    followup:document.getElementById('c_followup').value,
+    exclusive:document.getElementById('c_exclusive').value,
+    birthday:document.getElementById('c_birthday').value,
+    followup_status:document.getElementById('c_followup_status').value,
+    reminder:document.getElementById('c_reminder').value.trim()
+  };
+  if(eid){const i=clients.findIndex(c=>c.id===parseInt(eid));if(i>-1)clients[i]=obj;}
+  else clients.push(obj);
+  saveClients();closeModal('m-client');renderClients();renderDash();renderAlerts&&renderAlerts();
+  toast('✅ הלקוח נשמר!');
+}
+function saveClientAndWA(){
+  saveClient();
+  setTimeout(()=>waForClient(parseInt(document.getElementById('c_id').value)||clients[clients.length-1].id),300);
+}
+function deleteClient(id){
+  if(!confirm('למחוק לקוח זה?'))return;
+  clients=clients.filter(c=>c.id!==id);saveClients();renderClients();renderDash();toast('🗑 הלקוח נמחק');
+}
+function renderClients(){
+  const q=(document.getElementById('csrch')||{value:''}).value.toLowerCase();
+  const tp=(document.getElementById('ctype')||{value:''}).value;
+  const st=(document.getElementById('cstat')||{value:''}).value;
+  const ci=(document.getElementById('ccity')||{value:''}).value;
+  const list=clients.filter(c=>{
+    const txt=`${c.first} ${c.last} ${c.phone} ${c.street||''} ${c.city}`.toLowerCase();
+    return txt.includes(q)&&(!tp||c.type===tp)&&(!st||c.status===st)&&(!ci||c.city===ci);
+  });
+  const el=document.getElementById('tbl-clients');if(!el)return;
+  if(!list.length){el.innerHTML='<div class="empty"><p>לא נמצאו לקוחות</p></div>';return;}
+  el.innerHTML=`<table class="tbl"><thead><tr>
+    <th>שם</th><th>טלפון</th><th>סוג</th><th>עיר/רחוב</th><th>תקציב</th><th>חד'</th><th>סטטוס</th><th>פולואפ</th><th>הערות</th><th>פעולות</th>
+  </tr></thead><tbody>${list.map(c=>{
+    const fuDate=c.followup?new Date(c.followup):null;
+    const isOverdue=fuDate&&fuDate<new Date();
+    return`<tr>
+    <td><strong>${c.first} ${c.last}</strong>${c.birthday?'<br><span style="font-size:10px;color:var(--gold)">🎂 '+c.birthday+'</span>':''}</td>
+    <td><a href="tel:${c.phone}" style="color:var(--primary);text-decoration:none">${c.phone}</a></td>
+    <td><span class="b ${typeColor[c.type]||'b-gray'}">${c.type}</span></td>
+    <td>${c.city}${c.street?'<br><span style="font-size:10px;color:var(--text3)">'+c.street+'</span>':''}</td>
+    <td style="font-weight:700;font-size:12px">${c.budget?'₪'+c.budget:'—'}</td>
+    <td style="text-align:center">${c.rooms||'—'}</td>
+    <td><span class="b ${statColor[c.status]||'b-gray'}">${c.status}</span></td>
+    <td style="font-size:11px;color:${isOverdue?'var(--red)':'var(--text3)'}">
+      ${c.followup?'📅 '+c.followup+(isOverdue?' ⚠️':''):'—'}
+      ${c.reminder?'<br>'+c.reminder:''}
+    </td>
+    <td style="font-size:11px;color:var(--text2);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${c.notes||''}">${c.notes||'—'}</td>
+    <td><div class="acts">
+      <button class="btn btn-sm" onclick="editClient(${c.id})" title="עריכה">✏️</button>
+      <button class="btn btn-sm btn-wa" onclick="waForClient(${c.id})" title="וואטסאפ">📲</button>
+      <button class="btn btn-sm btn-red" onclick="deleteClient(${c.id})" title="מחיקה">🗑</button>
+    </div></td>
+  </tr>`;
+  }).join('')}</tbody></table>`;
+}
+
+// ══════════════════════════════════════════
+//  PROPERTIES
+// ══════════════════════════════════════════
+function calcSqm(){
+  const price=parseFloat(document.getElementById('p_price').value);
+  const size=parseFloat(document.getElementById('p_size').value);
+  document.getElementById('p_sqm').value=(price&&size)?fmtPrice(Math.round(price/size))+'/מ"ר':'';
+}
+function fillOwnerSelect(selId){
+  const sel=document.getElementById(selId);if(!sel)return;
+  sel.innerHTML='<option value="0">— ללא בעלים —</option>'+clients.map(c=>`<option value="${c.id}">${c.first} ${c.last} (${c.phone})</option>`).join('');
+}
+function openPropModal(){
+  document.getElementById('p_id').value='';
+  document.getElementById('propModalTitle').textContent='נכס חדש';
+  ['p_street','p_size','p_floor','p_total','p_price','p_sqm','p_notes','p_followup_date'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('p_rooms').value='';
+  document.querySelectorAll('#pfeats input').forEach(cb=>cb.checked=false);
+  document.getElementById('p_status').value='למכירה';
+  document.getElementById('p_proptype').value='דירה';
+  document.getElementById('p_followup_status').value='';
+  document.getElementById('p_city').value='חולון';
+  fillOwnerSelect('p_owner');
+  openModal('m-prop');
+}
+function editProp(id){
+  const p=getProp(id);if(!p)return;
+  fillOwnerSelect('p_owner');
+  document.getElementById('p_id').value=p.id;
+  document.getElementById('propModalTitle').textContent='עריכת נכס';
+  document.getElementById('p_street').value=p.street;
+  document.getElementById('p_city').value=p.city;
+  document.getElementById('p_size').value=p.size;
+  document.getElementById('p_rooms').value=p.rooms||'';
+  document.getElementById('p_floor').value=p.floor||'';
+  document.getElementById('p_total').value=p.total||'';
+  document.getElementById('p_price').value=p.price;
+  document.getElementById('p_status').value=p.status;
+  document.getElementById('p_proptype').value=p.proptype||'דירה';
+  document.getElementById('p_sqm').value=p.size?fmtPrice(Math.round(p.price/p.size))+'/מ"ר':'';
+  document.getElementById('p_notes').value=p.notes||'';
+  document.getElementById('p_owner').value=p.owner||0;
+  document.getElementById('p_followup_status').value=p.followup_status||'';
+  document.getElementById('p_followup_date').value=p.followup_date||'';
+  document.querySelectorAll('#pfeats input').forEach(cb=>cb.checked=(p.features||[]).includes(cb.value));
+  openModal('m-prop');
+}
+function saveProp(){
+  const street=document.getElementById('p_street').value.trim();
+  if(!street){toast('⚠️ כתובת היא שדה חובה');return;}
+  const eid=document.getElementById('p_id').value;
+  const features=Array.from(document.querySelectorAll('#pfeats input:checked')).map(cb=>cb.value);
+  const price=parseFloat(document.getElementById('p_price').value)||0;
+  const size=parseFloat(document.getElementById('p_size').value)||0;
+  const totalVal=document.getElementById('p_total').value.trim();
+  const obj={
+    id:eid?parseInt(eid):uid(),street,
+    city:document.getElementById('p_city').value,
+    size,
+    rooms:document.getElementById('p_rooms').value.trim(),
+    floor:document.getElementById('p_floor').value.trim()||0,
+    total:totalVal||0,
+    price,
+    status:document.getElementById('p_status').value,
+    proptype:document.getElementById('p_proptype').value,
+    owner:parseInt(document.getElementById('p_owner').value)||0,
+    features,
+    notes:document.getElementById('p_notes').value.trim(),
+    followup_status:document.getElementById('p_followup_status').value,
+    followup_date:document.getElementById('p_followup_date').value
+  };
+  if(eid){const i=props.findIndex(p=>p.id===parseInt(eid));if(i>-1)props[i]=obj;}
+  else props.push(obj);
+  saveProps();closeModal('m-prop');renderProps();renderDash();toast('✅ הנכס נשמר!');
+}
+function deleteProp(id){
+  if(!confirm('למחוק נכס זה?'))return;
+  props=props.filter(p=>p.id!==id);saveProps();renderProps();renderDash();toast('🗑 הנכס נמחק');
+}
+function renderProps(){
+  const q=(document.getElementById('psrch')||{value:''}).value.toLowerCase();
+  const ci=(document.getElementById('pcity')||{value:''}).value;
+  const st=(document.getElementById('pstat')||{value:''}).value;
+  const ro=(document.getElementById('prooms')||{value:''}).value;
+  const pt=(document.getElementById('pproptype')||{value:''}).value;
+  const pf=(document.getElementById('pfollowup')||{value:''}).value;
+  const list=props.filter(p=>{
+    const txt=`${p.street} ${p.city}`.toLowerCase();
+    return txt.includes(q)&&(!ci||p.city===ci)&&(!st||p.status===st)&&
+           (!ro||String(p.rooms)===ro)&&(!pt||p.proptype===pt)&&(!pf||p.followup_status===pf);
+  });
+  const el=document.getElementById('tbl-props');if(!el)return;
+  if(!list.length){el.innerHTML='<div class="empty"><p>לא נמצאו נכסים</p></div>';return;}
+  const followupColors={
+    'נקבעה פגישה':'b-primary','ממתין לפגישה':'b-amber','פגישה הושלמה':'b-green',
+    'בהמתנה לתשובה':'b-amber','מעוניין — ממתין לאישור':'b-gold',
+    'הצעת מחיר נשלחה':'b-primary','במשא ומתן':'b-gold',
+    'חוזה בהכנה':'b-green','עסקה נסגרה':'b-green','לא רלוונטי':'b-gray'
+  };
+  el.innerHTML=`<table class="tbl"><thead><tr>
+    <th>כתובת</th><th>עיר</th><th>סוג נכס</th><th>חד'</th><th>מ"ר</th><th>קומה/בניין</th><th>מאפיינים</th><th>מחיר</th><th>₪/מ"ר</th><th>סטטוס</th><th>פולואפ</th><th>בעלים</th><th>פעולות</th>
+  </tr></thead><tbody>${list.map(p=>{
+    const owner=p.owner?getClient(p.owner):null;
+    const sqm=(p.size&&p.price)?Math.round(p.price/p.size):0;
+    const floorStr=p.floor?(p.floor+(p.total?'/'+p.total:'')):'—';
+    const fuColor=followupColors[p.followup_status]||'b-gray';
+    return`<tr>
+      <td><strong>${p.street}</strong>${p.notes?'<br><span style="font-size:10px;color:var(--text3)">'+p.notes+'</span>':''}</td>
+      <td>${p.city}</td>
+      <td style="font-size:11px">${p.proptype||'דירה'}</td>
+      <td style="text-align:center;font-weight:700">${p.rooms||'—'}</td>
+      <td style="text-align:center">${p.size||'—'}</td>
+      <td style="text-align:center">${floorStr}</td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:3px">${featsHtml(p.features)}</div></td>
+      <td style="font-weight:800;color:var(--primary)">${fmtPrice(p.price)}</td>
+      <td style="font-size:11px;color:var(--text3)">${sqm?fmtPrice(sqm):'—'}</td>
+      <td><span class="b ${propStatColor[p.status]||'b-gray'}">${p.status}</span></td>
+      <td>
+        ${p.followup_status?`<span class="b ${fuColor}" style="font-size:10px">${p.followup_status}</span>`:'<span style="color:var(--text3);font-size:11px">—</span>'}
+        ${p.followup_date?`<br><span style="font-size:10px;color:var(--text3)">📅 ${p.followup_date}</span>`:''}
+      </td>
+      <td style="font-size:11px">${owner?owner.first+' '+owner.last:'—'}</td>
+      <td><div class="acts">
+        <button class="btn btn-sm" onclick="editProp(${p.id})">✏️</button>
+        <button class="btn btn-sm btn-red" onclick="deleteProp(${p.id})">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('')}</tbody></table>`;
+}
+
+// ══════════════════════════════════════════
+//  ALERTS
+// ══════════════════════════════════════════
+function renderAlerts(){
+  const now=new Date();
+  const urgent=[],week=[],bday=[];
+  clients.forEach(c=>{
+    const name=`${c.first} ${c.last}`;
+    if(c.exclusive){
+      const excl=new Date(c.exclusive);
+      const days=Math.round((excl-now)/(1000*60*60*24));
+      if(days>=0&&days<=7) urgent.push({c,emoji:'⚠️',text:`בלעדיות מסתיימת בעוד ${days} ימים`,color:'var(--red)'});
+    }
+    if(c.followup){
+      const fu=new Date(c.followup);
+      const days=Math.round((fu-now)/(1000*60*60*24));
+      if(days<=-1&&days>=-3) urgent.push({c,emoji:'🔴',text:`פולואפ באיחור של ${Math.abs(days)} ימים`,color:'var(--red)'});
+      else if(days>=0&&days<=1) urgent.push({c,emoji:'🔄',text:`פולואפ היום/מחר — ${c.followup_status||'בדוק סטטוס'}`,color:'var(--amber)'});
+      else if(days>=2&&days<=7) week.push({c,emoji:'📅',text:`פולואפ בעוד ${days} ימים`,color:'var(--amber)'});
+    }
+    if(c.birthday){
+      const bd=new Date(c.birthday);
+      const thisYear=new Date(now.getFullYear(),bd.getMonth(),bd.getDate());
+      const days=Math.round((thisYear-now)/(1000*60*60*24));
+      if(days>=0&&days<=14) bday.push({c,emoji:'🎂',text:`יום הולדת בעוד ${days} ימים!`,color:'var(--gold)'});
+    }
+  });
+  // Jewish holidays
+  const holidays=[
+    {name:'ראש השנה',date:'2025-09-23'},{name:'פסח',date:'2026-04-02'},
+    {name:'חנוכה',date:'2025-12-15'},{name:'שבועות',date:'2026-05-22'}
+  ];
+  holidays.forEach(h=>{
+    const hDate=new Date(h.date);
+    const days=Math.round((hDate-now)/(1000*60*60*24));
+    if(days>=0&&days<=14) bday.push({c:null,emoji:'🎉',text:`${h.name} בעוד ${days} ימים — שלח ברכות!`,color:'var(--primary)'});
+  });
+
+  const alertBadge=document.getElementById('alert-badge');
+  if(alertBadge) alertBadge.textContent=(urgent.length+week.length+bday.length)||'';
+
+  function renderList(items,el){
+    if(!items.length){el.innerHTML='<div style="padding:14px;font-size:12px;color:var(--text3);text-align:center">אין התראות ✅</div>';return;}
+    el.innerHTML=items.map(a=>`
+      <div class="alert-item ${a.color==='var(--red)'?'urgent':''}">
+        <span style="font-size:22px">${a.emoji}</span>
+        <div style="flex:1">
+          ${a.c?`<div style="font-weight:700;font-size:13px">${a.c.first} ${a.c.last}</div>`:''}
+          <div style="font-size:12px;color:${a.color};font-weight:600">${a.text}</div>
+          ${a.c&&a.c.reminder?`<div style="font-size:11px;color:var(--text3)">📌 ${a.c.reminder}</div>`:''}
+        </div>
+        ${a.c?`<div class="acts">
+          <button class="btn btn-sm btn-wa" onclick="waForClient(${a.c.id})">📲</button>
+          <button class="btn btn-sm" onclick="editClient(${a.c.id})">✏️</button>
+        </div>`:''}
+      </div>`).join('');
+  }
+  renderList(urgent,document.getElementById('alerts-urgent'));
+  renderList(week,document.getElementById('alerts-week'));
+  renderList(bday,document.getElementById('alerts-bday'));
+}
+
+function renderShabbatPreview(){
+  const el=document.getElementById('shabbat-preview');if(!el)return;
+  const activeClients=clients.filter(c=>c.status==='פעיל');
+  el.innerHTML=`<div style="font-size:12px;color:var(--text3)">${activeClients.length} לקוחות פעילים יקבלו את ההודעה</div>
+  <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">${activeClients.slice(0,8).map(c=>`<span class="b b-green">${c.first} ${c.last}</span>`).join('')}${activeClients.length>8?`<span class="b b-gray">+${activeClients.length-8} נוספים</span>`:''}</div>`;
+}
+
+function sendShabbatAll(){
+  const activeClients=clients.filter(c=>c.status==='פעיל');
+  if(!activeClients.length){toast('אין לקוחות פעילים');return;}
+  let i=0;
+  function sendNext(){
+    if(i>=activeClients.length)return;
+    const c=activeClients[i++];
+    const phone=c.phone.replace(/[-\s]/g,'');
+    const local=phone.startsWith('0')?'972'+phone.slice(1):phone;
+    const msg=`שלום ${c.first},\n\nשבת שלום ומבורכת! 🕯️\n\nבברכה,\nרוי מגירה | RE/MAX | 054-6661546`;
+    window.open(`https://wa.me/${local}?text=${encodeURIComponent(msg)}`,'_blank');
+    if(i<activeClients.length) setTimeout(sendNext,1200);
+  }
+  toast(`📲 שולח שבת שלום ל-${activeClients.length} לקוחות...`);
+  sendNext();
+}
+
+// ══════════════════════════════════════════
+//  WHATSAPP
+// ══════════════════════════════════════════
+function fillWASelect(){
+  const sel=document.getElementById('waClient');if(!sel)return;
+  sel.innerHTML='<option value="">— בחר לקוח —</option>'+clients.map(c=>`<option value="${c.id}">${c.first} ${c.last} | ${c.phone}</option>`).join('');
+}
+function fillWATplSelect(){
+  const sel=document.getElementById('waTpl');if(!sel)return;
+  sel.innerHTML='<option value="">— בחר תבנית —</option>'+templates.map((t,i)=>`<option value="${i}">${t.name}</option>`).join('');
+  // Built-in templates
+  const builtins=[
+    'שבת שלום','שנה טובה','חג פסח שמח','חנוכה שמח','יום הולדת','פולואפ','נכס חדש'
+  ];
+  sel.innerHTML+='<optgroup label="תבניות מובנות">'+builtins.map((n,i)=>`<option value="bi_${i}">${n}</option>`).join('');
+}
+function selectWAClient(){
+  const id=parseInt(document.getElementById('waClient').value)||0;
+  const c=getClient(id);
+  document.getElementById('wa-name').textContent=c?`${c.first} ${c.last}`:'בחר לקוח';
+  document.getElementById('wa-phone-display').textContent=c?c.phone:'—';
+  document.getElementById('wa-avatar').textContent=c?initials(c):'?';
+  if(c&&waConvs[c.id]){
+    renderWAConv(c.id);
+  } else {
+    document.getElementById('wa-msgs-preview').innerHTML='<div style="text-align:center;color:rgba(255,255,255,.3);font-size:12px;padding:20px">אין היסטוריית הודעות</div>';
+  }
+}
+function loadWATpl(){
+  const sel=document.getElementById('waTpl');
+  const val=sel.value;if(!val)return;
+  const id=parseInt(document.getElementById('waClient').value)||0;
+  const c=getClient(id);
+  const name=c?c.first:'לקוח יקר';
+  const prop=c&&c.street?c.street:'הנכס';
+  let msg='';
+  if(val.startsWith('bi_')){
+    const idx=parseInt(val.replace('bi_',''));
+    const builtinTpls=[
+      `שלום ${name},\n\nשבת שלום ומבורכת! 🕯️\n\nבברכה,\nרוי מגירה | 054-6661546`,
+      `שנה טובה ומתוקה ${name}! 🍯\n\nמאחל לך ולמשפחתך שנה של בריאות, אושר ושגשוג!\n\nרוי מגירה | RE/MAX | 054-6661546`,
+      `חג פסח שמח ${name}! 🌿\n\nמאחל לך חג כשר ושמח!\n\nרוי מגירה | 054-6661546`,
+      `חנוכה שמח ${name}! 🕎\n\nיהי נרך דולק תמיד!\n\nרוי מגירה | 054-6661546`,
+      `יום הולדת שמח ${name}! 🎂🎉\n\nאיחולים מכל הלב!\n\nרוי מגירה | 054-6661546`,
+      `שלום ${name},\n\nרציתי לבדוק — יש עדכונים? אשמח לשמוע איך מתקדמים הדברים.\n\nרוי מגירה | 054-6661546`,
+      `שלום ${name},\n\nנכס חדש! פרסמנו נכס ב${prop} שאולי יעניין אותך.\n\nמתי נוח לשוחח?\n\nרוי מגירה | 054-6661546`
+    ];
+    msg=builtinTpls[idx]||'';
+  } else {
+    const tpl=templates[parseInt(val)];
+    if(!tpl)return;
+    msg=tpl.body.replace(/{שם}/g,name).replace(/{נכס}/g,prop).replace(/{תאריך}/g,new Date().toLocaleDateString('he-IL')).replace(/{סוכן}/g,'רוי מגירה').replace(/{טלפון}/g,'054-6661546');
+  }
+  document.getElementById('waMsg').value=msg;
+  renderWAPreview();
+}
+function renderWAPreview(){
+  const ta=document.getElementById('waMsg');
+  const id=parseInt(document.getElementById('waClient').value)||0;
+  const c=getClient(id);
+  const name=c?c.first:'לקוח';
+  const msg=ta.value.replace(/{שם}/g,name);
+  const preview=document.getElementById('wa-msgs-preview');
+  if(msg){
+    const now=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+    preview.innerHTML=`<div class="wa-msg out">${msg.replace(/\n/g,'<br>')}<div class="wa-t">${now} ✓✓</div></div>`;
+  }
+}
+document.addEventListener('input',e=>{if(e.target.id==='waMsg')renderWAPreview()});
+
+function insertWAVar(v){
+  const ta=document.getElementById('waMsg');
+  const s=ta.selectionStart,e=ta.selectionEnd;
+  ta.value=ta.value.slice(0,s)+v+ta.value.slice(e);
+  ta.selectionStart=ta.selectionEnd=s+v.length;
+  ta.focus();renderWAPreview();
+}
+function waForClient(id){
+  nav('whatsapp');
+  setTimeout(()=>{
+    document.getElementById('waClient').value=id;
+    selectWAClient();
+    const c=getClient(id);
+    if(c) document.getElementById('waMsg').value=`שלום ${c.first},\n\n`;
+  },200);
+}
+function sendWA(){
+  const id=parseInt(document.getElementById('waClient').value)||0;
+  const c=getClient(id);
+  if(!c){toast('⚠️ בחר לקוח');return;}
+  let msg=document.getElementById('waMsg').value;
+  if(!msg.trim()){toast('⚠️ הזן הודעה');return;}
+  msg=msg.replace(/{שם}/g,c.first).replace(/{נכס}/g,c.street||'הנכס').replace(/{תאריך}/g,new Date().toLocaleDateString('he-IL'));
+  const phone=c.phone.replace(/[-\s]/g,'');
+  const local=phone.startsWith('0')?'972'+phone.slice(1):phone;
+  window.open(`https://wa.me/${local}?text=${encodeURIComponent(msg)}`,'_blank');
+  // Save to history
+  const entry={id:uid(),clientId:c.id,clientName:`${c.first} ${c.last}`,phone:c.phone,msg,date:new Date().toLocaleString('he-IL')};
+  waHist.unshift(entry);if(waHist.length>100)waHist.pop();
+  if(!waConvs[c.id])waConvs[c.id]=[];
+  waConvs[c.id].unshift(entry);
+  saveWA();renderWAHist();selectWAClient();
+  toast('📲 וואטסאפ נפתח!');
+}
+function copyWAMsg(){
+  const msg=document.getElementById('waMsg').value;
+  navigator.clipboard.writeText(msg).then(()=>toast('📋 הועתק!')).catch(()=>{});
+}
+function renderWAHist(){
+  const el=document.getElementById('wa-hist');if(!el)return;
+  if(!waHist.length){el.innerHTML='<div class="empty" style="padding:16px"><p>אין היסטוריה</p></div>';return;}
+  el.innerHTML=waHist.slice(0,15).map(h=>`
+    <div style="padding:8px;border-bottom:1px solid var(--border);font-size:11px">
+      <div style="font-weight:700;color:var(--text)">${h.clientName}</div>
+      <div style="color:var(--text3);margin:2px 0">${h.msg.slice(0,60)}${h.msg.length>60?'...':''}</div>
+      <div style="color:var(--text3)">${h.date}</div>
+    </div>`).join('');
+}
+function renderWAConv(clientId){
+  const convs=waConvs[clientId]||[];
+  const preview=document.getElementById('wa-msgs-preview');
+  if(!convs.length){preview.innerHTML='<div style="text-align:center;color:rgba(255,255,255,.3);font-size:12px;padding:20px">אין היסטוריה</div>';return;}
+  preview.innerHTML=convs.slice(0,10).reverse().map(h=>`
+    <div class="wa-msg out">${h.msg.replace(/\n/g,'<br>').slice(0,200)}<div class="wa-t">${h.date}</div></div>`).join('');
+}
+
+// ══════════════════════════════════════════
+//  BULK MESSAGING
+// ══════════════════════════════════════════
+const bulkTpls={
+  shabbat:'שלום {שם},\n\nשבת שלום ומבורכת! 🕯️\n\nבברכה,\nרוי מגירה | RE/MAX | 054-6661546',
+  rosh_hashana:'שנה טובה ומתוקה {שם}! 🍯\n\nמאחל לך ולמשפחתך שנה של בריאות, אושר ושגשוג!\n\nרוי מגירה | RE/MAX צוות רוזנברגר | 054-6661546',
+  pesach:'חג פסח כשר ושמח {שם}! 🌿\n\nמאחל לך ולמשפחתך חג מאיר ומשמח!\n\nרוי מגירה | 054-6661546',
+  chanuka:'חנוכה שמח {שם}! 🕎\n\nיהי נרך דולק תמיד!\n\nרוי מגירה | RE/MAX | 054-6661546',
+  follow:'שלום {שם},\n\nרציתי לבדוק — יש עדכונים לגבי הנכס שלך?\nאני כאן לכל שאלה.\n\nרוי מגירה | 054-6661546',
+  new_prop:'שלום {שם},\n\nנכס חדש! פרסמנו נכס חדש שאולי יעניין אותך.\n\nצור קשר לפרטים!\nרוי מגירה | 054-6661546'
+};
+function loadBulkTpl(key){
+  const ta=document.getElementById('bulk-msg');
+  if(ta&&bulkTpls[key]) ta.value=bulkTpls[key];
+  updateBulkCount();
+}
+function useBulkTemplate(key){
+  nav('bulk');
+  setTimeout(()=>loadBulkTpl(key),200);
+}
+function getBulkList(){
+  const type=document.getElementById('bulk-type').value;
+  const city=document.getElementById('bulk-city').value;
+  return clients.filter(c=>c.status==='פעיל'&&(!type||c.type===type)&&(!city||c.city===city));
+}
+function updateBulkCount(){
+  const list=getBulkList();
+  const el=document.getElementById('bulk-count');
+  if(el) el.textContent=`${list.length} לקוחות`;
+}
+function previewBulk(){
+  const list=getBulkList();
+  const msg=document.getElementById('bulk-msg').value;
+  const card=document.getElementById('bulk-preview-card');
+  const ul=document.getElementById('bulk-preview-list');
+  card.style.display='';
+  ul.innerHTML=list.map(c=>{
+    const preview=msg.replace(/{שם}/g,c.first).slice(0,80);
+    return`<div style="display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--border)">
+      <span class="b ${typeColor[c.type]||'b-gray'}">${c.type}</span>
+      <strong style="font-size:12px">${c.first} ${c.last}</strong>
+      <span style="font-size:11px;color:var(--text3)">${c.phone}</span>
+      <span style="font-size:11px;color:var(--text2);flex:1;text-overflow:ellipsis;overflow:hidden;white-space:nowrap">${preview}...</span>
+    </div>`;
+  }).join('');
+  toast(`👁 תצוגה מקדימה: ${list.length} לקוחות`);
+}
+function sendBulk(){
+  const list=getBulkList();
+  const msg=document.getElementById('bulk-msg').value;
+  if(!msg.trim()){toast('⚠️ הזן הודעה');return;}
+  if(!list.length){toast('⚠️ אין לקוחות מתאימים');return;}
+  if(!confirm(`לשלוח הודעה ל-${list.length} לקוחות?`))return;
+  let i=0;
+  function sendNext(){
+    if(i>=list.length)return;
+    const c=list[i++];
+    const phone=c.phone.replace(/[-\s]/g,'');
+    const local=phone.startsWith('0')?'972'+phone.slice(1):phone;
+    const filled=msg.replace(/{שם}/g,c.first).replace(/{תאריך}/g,new Date().toLocaleDateString('he-IL'));
+    window.open(`https://wa.me/${local}?text=${encodeURIComponent(filled)}`,'_blank');
+    if(i<list.length) setTimeout(sendNext,1000);
+  }
+  toast(`📲 שולח ל-${list.length} לקוחות...`);
+  sendNext();
+}
+
+// ══════════════════════════════════════════
+//  TEMPLATES
+// ══════════════════════════════════════════
+function openTplModal(id){
+  document.getElementById('tpl_id').value=id||'';
+  document.getElementById('tplModalTitle').textContent=id?'עריכת תבנית':'תבנית חדשה';
+  if(id){
+    const t=templates.find(t=>t.id===id);if(!t)return;
+    document.getElementById('tpl_name').value=t.name;
+    document.getElementById('tpl_body').value=t.body;
+  } else {
+    document.getElementById('tpl_name').value='';
+    document.getElementById('tpl_body').value='';
+  }
+  openModal('m-tpl');
+}
+document.addEventListener('input',e=>{
+  if(e.target.id==='tpl_body'){
+    const preview=document.getElementById('tpl-preview-box');
+    if(preview) preview.textContent=e.target.value.replace(/{שם}/g,'ישראל').replace(/{נכס}/g,'רח\' הרצל 52').replace(/{תאריך}/g,new Date().toLocaleDateString('he-IL'));
+  }
+});
+function insertTplVar(v){
+  const ta=document.getElementById('tpl_body');
+  const s=ta.selectionStart,e=ta.selectionEnd;
+  ta.value=ta.value.slice(0,s)+v+ta.value.slice(e);
+  ta.selectionStart=ta.selectionEnd=s+v.length;
+  ta.focus();
+}
+function saveTpl(){
+  const name=document.getElementById('tpl_name').value.trim();
+  const body=document.getElementById('tpl_body').value.trim();
+  if(!name||!body){toast('⚠️ שם ותוכן הם שדות חובה');return;}
+  const eid=document.getElementById('tpl_id').value;
+  const obj={id:eid?parseInt(eid):uid(),name,body};
+  if(eid){const i=templates.findIndex(t=>t.id===parseInt(eid));if(i>-1)templates[i]=obj;}
+  else templates.push(obj);
+  saveTpls();closeModal('m-tpl');renderTpls();fillWATplSelect();toast('✅ התבנית נשמרה!');
+}
+function deleteTpl(id){
+  if(!confirm('למחוק תבנית זו?'))return;
+  templates=templates.filter(t=>t.id!==id);saveTpls();renderTpls();fillWATplSelect();toast('🗑 התבנית נמחקה');
+}
+function renderTpls(){
+  const el=document.getElementById('tpl-list');if(!el)return;
+  if(!templates.length){el.innerHTML='<div class="empty"><p>אין תבניות שמורות</p></div>';return;}
+  el.innerHTML=templates.map(t=>`
+    <div class="tpl-card">
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px">${t.name}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${t.body.slice(0,60)}...</div>
+      </div>
+      <div class="acts">
+        <button class="btn btn-sm btn-wa" onclick="useTplInWA(${t.id})">📲</button>
+        <button class="btn btn-sm" onclick="openTplModal(${t.id})">✏️</button>
+        <button class="btn btn-sm btn-red" onclick="deleteTpl(${t.id})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+function useTplInWA(id){
+  nav('whatsapp');
+  setTimeout(()=>{
+    const t=templates.find(t=>t.id===id);if(!t)return;
+    document.getElementById('waMsg').value=t.body;
+    renderWAPreview();
+  },200);
+}
+
+// ══════════════════════════════════════════
+//  CALENDAR / MEETINGS
+// ══════════════════════════════════════════
+function fillMeetingClients(){
+  const sel=document.getElementById('meet-client');if(!sel)return;
+  sel.innerHTML='<option value="">— ללא לקוח —</option>'+clients.map(c=>`<option value="${c.id}">${c.first} ${c.last} (${c.phone})</option>`).join('');
+  const now=new Date();
+  document.getElementById('meet-datetime').value=new Date(now.getTime()+24*3600000).toISOString().slice(0,16);
+}
+function addMeeting(){
+  const dt=document.getElementById('meet-datetime').value;
+  if(!dt){toast('⚠️ בחר תאריך ושעה');return;}
+  const clientId=parseInt(document.getElementById('meet-client').value)||0;
+  const duration=parseInt(document.getElementById('meet-duration').value)||60;
+  meetings.unshift({
+    id:uid(),clientId,datetime:dt,duration,
+    type:document.getElementById('meet-type').value,
+    address:document.getElementById('meet-address').value,
+    notes:document.getElementById('meet-notes').value,
+    created:new Date().toISOString()
+  });
+  saveMeetings();renderMeetings();renderMiniCal();toast('✅ הפגישה נשמרה!');
+}
+
+// ══════════════════════════════════════════
+//  ICS EXPORT — Google Calendar / Apple Calendar / Outlook
+// ══════════════════════════════════════════
+function toICSDate(dtStr, offsetMins){
+  const d=new Date(dtStr);
+  if(offsetMins) d.setMinutes(d.getMinutes()+offsetMins);
+  return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+}
+
+function meetingToICS(m){
+  const c=getClient(m.clientId);
+  const title=`${m.type}${c?' — '+c.first+' '+c.last:''}`;
+  const duration=m.duration||60;
+  const dtStart=toICSDate(m.datetime);
+  const dtEnd=toICSDate(m.datetime,duration);
+  const desc=`סוג: ${m.type}\\nלקוח: ${c?c.first+' '+c.last:'—'}\\nטלפון: ${c?c.phone:'—'}\\n${m.notes||''}`;
+  const loc=m.address||'';
+  const uid_str=`crm-${m.id}@roymegira.remax`;
+  return [
+    'BEGIN:VEVENT',
+    `UID:${uid_str}`,
+    `DTSTART:${dtStart}`,
+    `DTEND:${dtEnd}`,
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${desc}`,
+    `LOCATION:${loc}`,
+    'BEGIN:VALARM',
+    'TRIGGER:-PT30M',
+    'ACTION:DISPLAY',
+    `DESCRIPTION:תזכורת: ${title}`,
+    'END:VALARM',
+    'END:VEVENT'
+  ].join('\r\n');
+}
+
+function exportAllICS(){
+  if(!meetings.length){toast('⚠️ אין פגישות לייצוא');return;}
+  const icsContent=[
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//רוי מגירה CRM//HE',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:פגישות CRM — רוי מגירה',
+    'X-WR-TIMEZONE:Asia/Jerusalem',
+    ...meetings.map(meetingToICS),
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  const blob=new Blob([icsContent],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='פגישות_רוי_מגירה.ics';
+  a.click();
+  toast(`✅ קובץ ICS עם ${meetings.length} פגישות הורד! ייבא אותו ל-Google Calendar`);
+}
+
+function exportSingleICS(id){
+  const m=meetings.find(x=>x.id===id);if(!m)return;
+  const icsContent=[
+    'BEGIN:VCALENDAR','VERSION:2.0',
+    'PRODID:-//רוי מגירה CRM//HE',
+    'CALSCALE:GREGORIAN','METHOD:PUBLISH',
+    meetingToICS(m),
+    'END:VCALENDAR'
+  ].join('\r\n');
+  const blob=new Blob([icsContent],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='פגישה.ics';
+  a.click();
+  toast('✅ קובץ ICS הורד — פתח אותו לייבוא');
+}
+
+function openGCalImportGuide(){
+  window.open('https://calendar.google.com/calendar/r/settings/export','_blank');
+  toast('📥 Google Calendar נפתח — לחץ "ייבא" ובחר את קובץ ה-ICS');
+}
+
+function openGoogleCalendar(){
+  window.open('https://calendar.google.com/calendar/r','_blank');
+}
+function deleteMeeting(id){
+  meetings=meetings.filter(m=>m.id!==id);saveMeetings();renderMeetings();renderMiniCal();toast('🗑 פגישה נמחקה');
+}
+function renderMeetings(){
+  const el=document.getElementById('meetings-list');if(!el)return;
+  const now=new Date();
+  const sorted=meetings.slice().sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
+  if(!sorted.length){el.innerHTML='<div class="empty"><p>אין פגישות</p></div>';return;}
+  const months=['ינו','פבר','מרץ','אפר','מאי','יוני','יולי','אוג','ספט','אוק','נוב','דצמ'];
+  el.innerHTML=sorted.map(m=>{
+    const c=getClient(m.clientId);
+    const dt=new Date(m.datetime);
+    const isPast=dt<now;const isToday=dt.toDateString()===now.toDateString();
+    const isSoon=!isPast&&(dt-now)<2*24*3600000;
+    const borderColor=isPast?'var(--border)':isToday?'var(--amber)':isSoon?'var(--red)':'var(--border)';
+    return`<div style="display:flex;gap:10px;padding:10px;border:1px solid ${borderColor};border-radius:var(--r);margin-bottom:6px;background:var(--surface2)">
+      <div style="text-align:center;min-width:44px;flex-shrink:0">
+        <div style="font-size:20px;font-weight:900;color:${isPast?'var(--text3)':'var(--primary)}'}">${dt.getDate()}</div>
+        <div style="font-size:10px;color:var(--text3)">${months[dt.getMonth()]}</div>
+        <div style="font-size:11px;font-weight:700">${dt.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700">${m.type}</div>
+        <div style="font-size:12px;color:var(--text2)">👤 ${c?c.first+' '+c.last:'—'}${m.address?' | 📍 '+m.address:''}</div>
+        ${m.notes?`<div style="font-size:11px;color:var(--text3)">${m.notes}</div>`:''}
+        ${isToday?'<div style="font-size:11px;font-weight:700;color:var(--amber)">⏰ היום!</div>':''}
+      </div>
+      <div class="acts">
+        ${c?`<button class="btn btn-sm btn-wa" onclick="waForClient(${m.clientId})">📲</button>`:''}
+        <button class="btn btn-sm" style="background:#4285f4;color:#fff;border-color:#4285f4" title="הוסף ל-Google Calendar" onclick="addToGoogleCalendar(${JSON.stringify(m).replace(/"/g,'&quot;')})">📅 GCal</button>
+        <button class="btn btn-sm" style="background:var(--surface3)" title="הורד ICS" onclick="exportSingleICS(${m.id})">⬇️ ICS</button>
+        <button class="btn btn-sm btn-red" onclick="deleteMeeting(${m.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+//  GOOGLE CALENDAR INTEGRATION
+// ══════════════════════════════════════════
+function openGoogleCalendar(){
+  window.open('https://calendar.google.com/calendar/r','_blank');
+  toast('📅 Google Calendar נפתח!');
+}
+function addToGoogleCalendar(m){
+  const c=getClient(m.clientId);
+  const dt=new Date(m.datetime);
+  const dtEnd=new Date(dt.getTime()+60*60*1000);
+  function gcalFmt(d){return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';}
+  const title=encodeURIComponent(`${m.type}${c?' — '+c.first+' '+c.last:''}`);
+  const details=encodeURIComponent(`סוג: ${m.type}\nלקוח: ${c?c.first+' '+c.last:'—'}\nטלפון: ${c?c.phone:'—'}\n${m.notes||''}`);
+  const location=encodeURIComponent(m.address||'');
+  const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${gcalFmt(dt)}/${gcalFmt(dtEnd)}&details=${details}&location=${location}`;
+  window.open(url,'_blank');
+  toast('📅 נפתח Google Calendar — אשר את הפגישה!');
+}
+
+function renderMiniCal(){
+  const cal=document.getElementById('mini-cal');if(!cal)return;
+  const now=new Date();
+  const year=now.getFullYear();const month=now.getMonth();
+  const first=new Date(year,month,1);
+  const days=new Date(year,month+1,0).getDate();
+  const startDay=first.getDay();
+  const meetingDays=new Set(meetings.map(m=>{
+    const d=new Date(m.datetime);
+    return d.getFullYear()===year&&d.getMonth()===month?d.getDate():null;
+  }).filter(Boolean));
+  const monthNames=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  const dayNames=['א','ב','ג','ד','ה','ו','ש'];
+  let html=`<div class="cal-head"><span>${monthNames[month]} ${year}</span></div>
+  <div class="cal-grid">
+    ${dayNames.map(d=>`<div class="cal-day header">${d}</div>`).join('')}
+    ${Array(startDay).fill('<div class="cal-day other"></div>').join('')}
+    ${Array.from({length:days},(_,i)=>{
+      const d=i+1;
+      const isToday=d===now.getDate();
+      const hasMeeting=meetingDays.has(d);
+      return`<div class="cal-day${isToday?' today':hasMeeting?' has-meeting':''}">${d}</div>`;
+    }).join('')}
+  </div>`;
+  cal.innerHTML=html;
+}
+
+// ══════════════════════════════════════════
+//  LEADS
+// ══════════════════════════════════════════
+function openLeadModal(id){
+  document.getElementById('lead_id').value=id||'';
+  document.getElementById('leadModalTitle').textContent=id?'עריכת ליד':'ליד חדש';
+  const now=new Date().toISOString().split('T')[0];
+  const follow=new Date(Date.now()+3*24*3600000).toISOString().split('T')[0];
+  if(id){
+    const l=leads.find(l=>l.id===id);if(l){
+      document.getElementById('ld_name').value=l.name||'';
+      document.getElementById('ld_phone').value=l.phone||'';
+      document.getElementById('ld_email').value=l.email||'';
+      document.getElementById('ld_src').value=l.src||'פייסבוק';
+      document.getElementById('ld_status').value=l.status||'חדש';
+      document.getElementById('ld_city').value=l.city||'';
+      document.getElementById('ld_address').value=l.address||'';
+      document.getElementById('ld_urgency').value=l.urgency||'2';
+      document.getElementById('ld_followup').value=l.followup||follow;
+      document.getElementById('ld_notes').value=l.notes||'';
+    }
+  } else {
+    ['ld_name','ld_phone','ld_email','ld_address','ld_notes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('ld_status').value='חדש';
+    document.getElementById('ld_urgency').value='2';
+    document.getElementById('ld_followup').value=follow;
+  }
+  openModal('m-lead');
+}
+function saveLead(){
+  const name=document.getElementById('ld_name').value.trim();
+  const phone=document.getElementById('ld_phone').value.trim();
+  if(!name||!phone){toast('⚠️ שם וטלפון חובה');return;}
+  const eid=document.getElementById('lead_id').value;
+  const obj={
+    id:eid?parseInt(eid):uid(),name,phone,
+    email:document.getElementById('ld_email').value.trim(),
+    src:document.getElementById('ld_src').value,
+    status:document.getElementById('ld_status').value,
+    city:document.getElementById('ld_city').value,
+    address:document.getElementById('ld_address').value.trim(),
+    urgency:document.getElementById('ld_urgency').value,
+    followup:document.getElementById('ld_followup').value,
+    notes:document.getElementById('ld_notes').value.trim(),
+    created:new Date().toISOString()
+  };
+  if(eid){const i=leads.findIndex(l=>l.id===parseInt(eid));if(i>-1)leads[i]=obj;else leads.unshift(obj);}
+  else leads.unshift(obj);
+  saveLeads();closeModal('m-lead');renderLeads();toast('✅ הליד נשמר!');
+}
+function saveLeadWA(){
+  const name=document.getElementById('ld_name').value.trim();
+  const phone=document.getElementById('ld_phone').value.trim();
+  saveLead();
+  if(phone){
+    const cleanPhone=phone.replace(/[-\s]/g,'');
+    const local=cleanPhone.startsWith('0')?'972'+cleanPhone.slice(1):cleanPhone;
+    const msg=`שלום ${name.split(' ')[0]}, שמי רוי מגירה מ-RE/MAX צוות רוזנברגר. שמחתי ליצור קשר! אשמח לתת הערכת שווי חינם לנכס שלך. מתי נוח לדבר? 054-6661546`;
+    setTimeout(()=>window.open(`https://wa.me/${local}?text=${encodeURIComponent(msg)}`,'_blank'),300);
+  }
+}
+function deleteLead(id){
+  if(!confirm('למחוק ליד זה?'))return;
+  leads=leads.filter(l=>l.id!==id);saveLeads();renderLeads();toast('🗑 הליד נמחק');
+}
+function convertLead(id){
+  const l=leads.find(l=>l.id===id);if(!l)return;
+  const parts=l.name.split(' ');
+  const c={id:uid(),first:parts[0],last:parts.slice(1).join(' ')||'',
+    phone:l.phone,email:l.email||'',type:'מוכר',status:'פעיל',
+    city:l.city||'',street:l.address||'',budget:'',rooms:'3',
+    notes:'הומר מליד — מקור: '+l.src+(l.notes?'. '+l.notes:''),
+    followup:'',exclusive:'',birthday:'',followup_status:'',reminder:''};
+  clients.push(c);saveClients();
+  l.status='הפך ללקוח';saveLeads();renderLeads();toast('✅ הליד הפך ללקוח!');
+}
+function renderLeads(){
+  updateLeadCounts();
+  const src=(document.getElementById('ld-filter-src')||{value:''}).value;
+  const stat=(document.getElementById('ld-filter-stat')||{value:''}).value;
+  const list=leads.filter(l=>(!src||l.src===src)&&(!stat||l.status===stat));
+  const el=document.getElementById('leads-list');if(!el)return;
+  if(!list.length){el.innerHTML='<div class="empty"><p>אין לידים עדיין</p></div>';return;}
+  const urgEmoji={3:'🔴',2:'🟡',1:'🟢'};
+  const statColors={חדש:'b-red','יצרתי קשר':'b-amber','בטיפול':'b-primary','הפך ללקוח':'b-green','לא רלוונטי':'b-gray'};
+  el.innerHTML=list.map(l=>{
+    const isOverdue=l.followup&&new Date(l.followup)<new Date();
+    return`<div style="border:1px solid ${isOverdue?'var(--red)':'var(--border)'};border-radius:var(--r);padding:12px;margin-bottom:8px;background:var(--surface2)">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="font-size:20px">${urgEmoji[l.urgency||2]}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <strong style="font-size:13px">${l.name}</strong>
+            <span class="b ${statColors[l.status]||'b-gray'}">${l.status}</span>
+            <span style="font-size:10px;background:var(--primary2);color:var(--primary);padding:1px 7px;border-radius:999px;font-weight:600">${l.src}</span>
+            ${l.city?`<span style="font-size:11px;color:var(--text3)">📍 ${l.city}</span>`:''}
+          </div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px"><a href="tel:${l.phone}" style="color:var(--primary)">${l.phone}</a></div>
+          ${l.notes?`<div style="font-size:11px;color:var(--text3);margin-top:3px">${l.notes}</div>`:''}
+          ${l.followup?`<div style="font-size:11px;margin-top:4px;color:${isOverdue?'var(--red)':'var(--text3)'}">📅 מעקב: ${l.followup}${isOverdue?' ⚠️ באיחור':''}</div>`:''}
+        </div>
+        <div class="acts" style="flex-direction:column">
+          <button class="btn btn-sm btn-wa" onclick="leadToWA('${l.id}')">📲</button>
+          <button class="btn btn-sm btn-green" onclick="convertLead('${l.id}')" title="המר ללקוח">👤+</button>
+          <button class="btn btn-sm" onclick="openLeadModal('${l.id}')">✏️</button>
+          <button class="btn btn-sm btn-red" onclick="deleteLead('${l.id}')">🗑</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function leadToWA(id){
+  const l=leads.find(l=>l.id===id);if(!l)return;
+  const phone=l.phone.replace(/[-\s]/g,'');
+  const local=phone.startsWith('0')?'972'+phone.slice(1):phone;
+  const msg=`שלום ${l.name.split(' ')[0]}, שמי רוי מגירה מ-RE/MAX צוות רוזנברגר. שמחתי ליצור קשר! אשמח לתת הערכת שווי חינם לנכס שלך. מתי נוח לדבר? 054-6661546`;
+  window.open(`https://wa.me/${local}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+// ══════════════════════════════════════════
+//  PUBLISHER
+// ══════════════════════════════════════════
+function fillPubPropSelect(){
+  const sel=document.getElementById('pub-prop');if(!sel)return;
+  sel.innerHTML='<option value="">— בחר נכס מה-CRM —</option>'+
+    props.map(p=>`<option value="${p.id}">${p.street}, ${p.city} | ${p.rooms} חד. | ${fmtPrice(p.price)}</option>`).join('');
+}
+function loadPropForPost(){
+  const id=parseInt(document.getElementById('pub-prop').value);
+  const p=getProp(id);if(!p)return;
+  document.getElementById('pub-street').value=p.street;
+  document.getElementById('pub-city').value=p.city;
+  document.getElementById('pub-rooms').value=p.rooms+' חדרים';
+  document.getElementById('pub-size').value=p.size||'';
+  document.getElementById('pub-floor').value=p.floor?(p.floor+(p.total?'/'+p.total:'')):'';
+  document.getElementById('pub-price').value=p.price||'';
+  document.querySelectorAll('#pub-feats input').forEach(cb=>cb.checked=(p.features||[]).includes(cb.value));
+  buildPost();
+}
+function buildPost(){
+  const street=document.getElementById('pub-street').value;
+  const city=document.getElementById('pub-city').value;
+  const rooms=document.getElementById('pub-rooms').value;
+  const size=document.getElementById('pub-size').value;
+  const floor=document.getElementById('pub-floor').value;
+  const price=parseFloat(document.getElementById('pub-price').value)||0;
+  const type=document.getElementById('pub-type').value;
+  const extra=document.getElementById('pub-extra').value;
+  const feats=Array.from(document.querySelectorAll('#pub-feats input:checked')).map(cb=>cb.value);
+  const typeEmoji={למכירה:'🔑',להשכרה:'🏘️','נמכר!':'✅',מחפשים:'🔍'}[type]||'🏠';
+
+  let post=`${typeEmoji} *${type}${street?' — '+street:''}*\n`;
+  if(city) post+=`📍 ${city}\n`;
+  post+='\n';
+  if(rooms) post+=`🛏️ ${rooms}\n`;
+  if(size) post+=`📐 ${size} מ"ר\n`;
+  if(floor) post+=`🏢 קומה ${floor}\n`;
+  if(price>0) post+=`💰 מחיר: ${fmtPrice(price)}\n`;
+  if(size&&price>0) post+=`📊 מחיר/מ"ר: ${fmtPrice(Math.round(price/parseFloat(size)))}\n`;
+  post+='\n';
+  if(feats.length) post+=`✅ ${feats.join(' | ')}\n`;
+  if(extra) post+=`\n${extra}\n`;
+  post+='\n📞 רוי מגירה | RE/MAX צוות רוזנברגר | 054-6661546';
+
+  const hashtags=['#נדלן','#'+city.replace(/ /g,'_'),'#דירה_'+type.replace(/!/g,'').replace(/ /g,'_'),'#'+rooms.replace(/ /g,'_'),'#רוי_מגירה','#REMAX','#נדל_ן_ישראל','#חולון_נדלן'].join(' ');
+
+  document.getElementById('pub-post-display').textContent=post;
+  document.getElementById('pub-hashtags').textContent=hashtags;
+  document.getElementById('post-preview-card').style.display='';
+  renderPubGroups();
+}
+function copyPost(){
+  const post=document.getElementById('pub-post-display').textContent;
+  const hash=document.getElementById('pub-hashtags').textContent;
+  navigator.clipboard.writeText(post+'\n\n'+hash).then(()=>toast('📋 הפוסט הועתק!')).catch(()=>{});
+}
+function sharePostWA(){
+  const post=document.getElementById('pub-post-display').textContent;
+  window.open(`https://wa.me/?text=${encodeURIComponent(post)}`,'_blank');
+}
+function openFB(){window.open('https://www.facebook.com/','_blank')}
+function openIG(){window.open('https://www.instagram.com/','_blank')}
+
+function renderPubGroups(){
+  const el=document.getElementById('pub-groups');if(!el)return;
+  if(!pubGroups.length){el.innerHTML='<div style="color:var(--text3);font-size:12px">אין קבוצות — הוסף קבוצת פייסבוק</div>';return;}
+  el.innerHTML=pubGroups.map((g,i)=>`
+    <div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:12px;font-weight:600;flex:1">📘 ${g.name}</span>
+      <a href="${g.url}" target="_blank" class="btn btn-sm">🔗 פתח</a>
+      <button class="btn btn-sm btn-red" onclick="pubGroups.splice(${i},1);saveGroups();renderPubGroups()">✕</button>
+    </div>`).join('');
+}
+function addGroup(){
+  const name=prompt('שם הקבוצה:');if(!name)return;
+  const url=prompt('קישור לקבוצה:','https://www.facebook.com/groups/');if(!url)return;
+  pubGroups.push({id:uid(),name,url});saveGroups();renderPubGroups();toast('✅ קבוצה נוספה!');
+}
+function openAllGroups(){
+  const post=document.getElementById('pub-post-display').textContent;
+  navigator.clipboard.writeText(post).then(()=>{}).catch(()=>{});
+  const selected=pubGroups;
+  if(!selected.length){toast('⚠️ הוסף קבוצות קודם');return;}
+  selected.forEach((g,i)=>setTimeout(()=>window.open(g.url,'_blank'),i*600));
+  toast(`🚀 נפתחו ${selected.length} קבוצות! הדבק את הפוסט בכל אחת`);
+}
+
+// ══════════════════════════════════════════
+//  EXPORT / IMPORT
+// ══════════════════════════════════════════
+function exportData(){
+  const data={clients,props,meetings,leads,templates,pubGroups,waHist,exported:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`crm_backup_${new Date().toLocaleDateString('he-IL').replace(/\./g,'-')}.json`;
+  a.click();toast('📥 הנתונים יוצאו לגיבוי!');
+}
+function importData(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(data.clients){clients=data.clients;saveClients()}
+      if(data.props){props=data.props;saveProps()}
+      if(data.meetings){meetings=data.meetings;saveMeetings()}
+      if(data.leads){leads=data.leads;saveLeads()}
+      if(data.templates){templates=data.templates;saveTpls()}
+      if(data.pubGroups){pubGroups=data.pubGroups;saveGroups()}
+      renderDash();toast('✅ נתונים שוחזרו בהצלחה!');
+    }catch(err){toast('❌ שגיאה בקובץ הגיבוי')}
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  updateCounts();updateLeadCounts();renderDash();
+  document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+});
+
+// ══════════════════════════════════════════
+//  AUTO-BACKUP SYSTEM — גיבוי אוטומטי כל 5 דקות
+// ══════════════════════════════════════════
+function autoBackup(){
+  try{
+    const data={clients,props,meetings,leads,templates,pubGroups,waHist,
+      timestamp:new Date().toISOString(),version:'2.0'};
+    // Keep last 3 backups in localStorage
+    const backups=JSON.parse(localStorage.getItem('crm2_auto_backups')||'[]');
+    backups.unshift(data);
+    if(backups.length>3) backups.pop();
+    localStorage.setItem('crm2_auto_backups',JSON.stringify(backups));
+    console.log('[AutoBackup] saved at '+new Date().toLocaleTimeString('he-IL'));
+  }catch(e){console.warn('AutoBackup failed',e)}
+}
+
+function restoreFromAutoBackup(idx){
+  try{
+    const backups=JSON.parse(localStorage.getItem('crm2_auto_backups')||'[]');
+    const bk=backups[idx||0];
+    if(!bk){toast('אין גיבוי זמין');return;}
+    if(!confirm('לשחזר גיבוי מ-'+new Date(bk.timestamp).toLocaleString('he-IL')+'? הנתונים הנוכחיים יוחלפו!'))return;
+    clients=bk.clients||clients;
+    props=bk.props||props;
+    meetings=bk.meetings||meetings;
+    leads=bk.leads||leads;
+    templates=bk.templates||templates;
+    saveClients();saveProps();saveMeetings();saveLeads();saveTpls();
+    renderDash();toast('✅ שוחזר מגיבוי '+new Date(bk.timestamp).toLocaleString('he-IL'));
+  }catch(e){toast('❌ שגיאה בשחזור')}
+}
+
+// Auto-backup every 5 minutes
+setInterval(autoBackup, 5*60*1000);
+
+// Backup on page unload (close/refresh)
+window.addEventListener('beforeunload', autoBackup);
+
+// Show backup status in console on load
+window.addEventListener('DOMContentLoaded', ()=>{
+  const backups=JSON.parse(localStorage.getItem('crm2_auto_backups')||'[]');
+  if(backups.length){
+    console.log('[CRM] '+backups.length+' auto-backups available. Last: '+new Date(backups[0].timestamp).toLocaleString('he-IL'));
+  }
+  // First backup after 30 seconds
+  setTimeout(autoBackup, 30000);
+});
+
+// ══════════════════════════════════════════
+//  GOOGLE DRIVE BACKUP INTEGRATION
+//  שימוש ב-Google Drive REST API + OAuth2 PKCE
+// ══════════════════════════════════════════
+
+// ─── הגדרות — מלא את ה-Client ID שלך מ-Google Cloud Console ───
+// (ראה הוראות בבאנר בתוכנה)
+const GDRIVE_CONFIG = {
+  clientId: LS.get('gdrive_client_id') || '',
+  scope: 'https://www.googleapis.com/auth/drive.file',
+  redirectUri: window.location.href.split('?')[0],
+  fileName: 'רוי_מגירה_CRM_backup.json'
+};
+
+let _gdriveToken = LS.get('gdrive_token') || null;
+let _gdriveTokenExp = LS.get('gdrive_token_exp') || 0;
+let _gdriveFileId = LS.get('gdrive_file_id') || null;
+
+function gdriveIsConnected(){
+  return _gdriveToken && Date.now() < _gdriveTokenExp;
+}
+
+function updateGDriveStatus(){
+  const el = document.getElementById('gdrive-status');
+  const btn = document.getElementById('btn-gdrive');
+  if(!el) return;
+  if(!GDRIVE_CONFIG.clientId){
+    el.innerHTML = '<span style="color:var(--amber)">⚠️ Google Drive לא מוגדר</span>';
+    if(btn) btn.onclick = showGDriveSetup;
+    if(btn) btn.innerHTML = '☁️ הגדר Drive';
+  } else if(gdriveIsConnected()){
+    const last = LS.get('gdrive_last_backup');
+    const lastStr = last ? new Date(last).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+    el.innerHTML = `<span style="color:var(--green)">✅ מחובר</span> <span style="color:var(--text3)">גיבוי אחרון: ${lastStr}</span>`;
+    if(btn){ btn.onclick = gdriveBackup; btn.innerHTML = '☁️ שמור ב-Drive'; }
+  } else {
+    el.innerHTML = '<span style="color:var(--text3)">☁️ לא מחובר</span>';
+    if(btn){ btn.onclick = gdriveLogin; btn.innerHTML = '🔑 התחבר ל-Drive'; }
+  }
+}
+
+// ─── OAuth2 login with implicit flow (works from file:// and Drive) ───
+function gdriveLogin(){
+  if(!GDRIVE_CONFIG.clientId){showGDriveSetup();return;}
+  const state = Math.random().toString(36).slice(2);
+  LS.set('gdrive_oauth_state', state);
+  const params = new URLSearchParams({
+    client_id: GDRIVE_CONFIG.clientId,
+    redirect_uri: GDRIVE_CONFIG.redirectUri,
+    response_type: 'token',
+    scope: GDRIVE_CONFIG.scope,
+    state,
+    prompt: 'select_account'
+  });
+  window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params.toString();
+}
+
+function gdriveHandleCallback(){
+  // Check if we're coming back from OAuth
+  const hash = window.location.hash;
+  if(!hash.includes('access_token')) return;
+  const params = new URLSearchParams(hash.slice(1));
+  const token = params.get('access_token');
+  const expiresIn = parseInt(params.get('expires_in') || '3600');
+  const state = params.get('state');
+  if(token && state === LS.get('gdrive_oauth_state')){
+    _gdriveToken = token;
+    _gdriveTokenExp = Date.now() + (expiresIn - 60) * 1000;
+    LS.set('gdrive_token', token);
+    LS.set('gdrive_token_exp', _gdriveTokenExp);
+    // Clean URL
+    window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+    toast('✅ מחובר ל-Google Drive!');
+    updateGDriveStatus();
+    // Auto-backup right away
+    setTimeout(gdriveBackup, 500);
+  }
+}
+
+async function gdriveBackup(){
+  if(!GDRIVE_CONFIG.clientId){showGDriveSetup();return;}
+  if(!gdriveIsConnected()){gdriveLogin();return;}
+
+  const data = {
+    clients, props, meetings, leads, templates, pubGroups, waHist,
+    timestamp: new Date().toISOString(),
+    version: '2.0',
+    agent: 'רוי מגירה | RE/MAX'
+  };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+
+  try {
+    let fileId = _gdriveFileId;
+
+    if(fileId){
+      // Update existing file
+      const res = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+        method: 'PATCH',
+        headers: {'Authorization': 'Bearer ' + _gdriveToken, 'Content-Type': 'application/json'},
+        body: blob
+      });
+      if(res.status === 404){
+        // File was deleted — create new
+        fileId = null;
+        _gdriveFileId = null;
+      } else if(!res.ok){
+        throw new Error('Update failed: ' + res.status);
+      }
+    }
+
+    if(!fileId){
+      // Create new file
+      const meta = {name: GDRIVE_CONFIG.fileName, mimeType: 'application/json'};
+      const form = new FormData();
+      form.append('metadata', new Blob([JSON.stringify(meta)], {type:'application/json'}));
+      form.append('file', blob);
+      const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+        method: 'POST',
+        headers: {'Authorization': 'Bearer ' + _gdriveToken},
+        body: form
+      });
+      if(!res.ok) throw new Error('Create failed: ' + res.status);
+      const created = await res.json();
+      _gdriveFileId = created.id;
+      LS.set('gdrive_file_id', _gdriveFileId);
+    }
+
+    const now = new Date().toISOString();
+    LS.set('gdrive_last_backup', now);
+    updateGDriveStatus();
+    toast('✅ גיבוי נשמר ב-Google Drive!');
+    console.log('[GDrive] Backup saved, file ID:', _gdriveFileId);
+
+  } catch(err){
+    console.error('[GDrive] Backup error:', err);
+    if(err.message && err.message.includes('401')){
+      _gdriveToken = null; _gdriveTokenExp = 0;
+      LS.set('gdrive_token',''); LS.set('gdrive_token_exp',0);
+      toast('⚠️ פג תוקף ההרשאה — מתחבר מחדש...');
+      setTimeout(gdriveLogin, 1000);
+    } else {
+      toast('❌ שגיאה בשמירה ל-Drive: ' + err.message);
+    }
+  }
+}
+
+async function gdriveRestore(){
+  if(!GDRIVE_CONFIG.clientId){showGDriveSetup();return;}
+  if(!gdriveIsConnected()){gdriveLogin();return;}
+  if(!_gdriveFileId){toast('⚠️ לא נמצא קובץ גיבוי ב-Drive — שמור קודם');return;}
+  if(!confirm('לשחזר נתונים מ-Google Drive? הנתונים הנוכחיים יוחלפו!'))return;
+  try{
+    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${_gdriveFileId}?alt=media`,{
+      headers:{'Authorization':'Bearer '+_gdriveToken}
+    });
+    if(!res.ok) throw new Error('Fetch failed: '+res.status);
+    const data = await res.json();
+    if(data.clients){clients=data.clients;saveClients();}
+    if(data.props){props=data.props;saveProps();}
+    if(data.meetings){meetings=data.meetings;saveMeetings();}
+    if(data.leads){leads=data.leads;saveLeads();}
+    if(data.templates){templates=data.templates;saveTpls();}
+    renderDash();
+    toast('✅ נתונים שוחזרו מ-Google Drive! ('+(data.timestamp?new Date(data.timestamp).toLocaleDateString('he-IL'):'—')+')');
+  }catch(err){
+    toast('❌ שגיאה בשחזור מ-Drive: '+err.message);
+  }
+}
+
+// ─── Setup Modal ───
+function showGDriveSetup(){
+  const saved = LS.get('gdrive_client_id')||'';
+  const html = `
+  <div style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)" id="gdrive-setup-overlay">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r3);padding:28px;width:560px;max-width:100%;direction:rtl;box-shadow:var(--shadow2)">
+      <div style="font-size:17px;font-weight:800;margin-bottom:6px">☁️ הגדרת Google Drive</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:20px">גיבוי אוטומטי לענן — 3 שלבים פשוטים</div>
+
+      <div style="display:flex;flex-direction:column;gap:14px;font-size:13px">
+        <div style="background:var(--surface2);border-radius:var(--r);padding:14px;border:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--primary);margin-bottom:8px">שלב 1 — צור פרויקט ב-Google Cloud</div>
+          <ol style="color:var(--text2);line-height:2;padding-right:18px">
+            <li>פתח <a href="https://console.cloud.google.com" target="_blank" style="color:var(--primary)">console.cloud.google.com</a></li>
+            <li>צור פרויקט חדש (שם: CRM-Roy)</li>
+            <li>חפש "Google Drive API" ← הפעל</li>
+            <li>APIs & Services ← Credentials ← Create Credentials ← OAuth 2.0 Client ID</li>
+            <li>Application type: <strong>Web application</strong></li>
+            <li>Authorized redirect URIs: הוסף <code style="background:var(--surface3);padding:1px 6px;border-radius:4px">${window.location.href.split('?')[0]}</code></li>
+          </ol>
+        </div>
+        <div style="background:var(--surface2);border-radius:var(--r);padding:14px;border:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--primary);margin-bottom:8px">שלב 2 — הכנס Client ID</div>
+          <input id="gdrive-client-id-input" placeholder="XXXXXXXXXX.apps.googleusercontent.com"
+            value="${saved}"
+            style="width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:13px;background:var(--surface);color:var(--text);direction:ltr"/>
+        </div>
+        <div style="background:rgba(34,197,94,0.08);border-radius:var(--r);padding:12px;border:1px solid rgba(34,197,94,0.2)">
+          <div style="font-weight:700;color:var(--green);margin-bottom:4px">שלב 3 — חבר והתחל לשמור</div>
+          <div style="color:var(--text2);font-size:12px">אחרי שהזנת את ה-Client ID — לחץ "שמור והתחבר". Google יפתח חלון התחברות, ואחרי שתאשר — גיבוי אוטומטי כל 5 דקות.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:20px;justify-content:flex-end">
+        <button class="btn" onclick="document.getElementById('gdrive-setup-overlay').remove()">ביטול</button>
+        <button class="btn btn-primary" onclick="saveGDriveClientId()">💾 שמור והתחבר לGoogle</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function saveGDriveClientId(){
+  const val = document.getElementById('gdrive-client-id-input').value.trim();
+  if(!val || !val.includes('.apps.googleusercontent.com')){
+    alert('Client ID לא תקין — חייב להסתיים ב-.apps.googleusercontent.com');return;
+  }
+  GDRIVE_CONFIG.clientId = val;
+  LS.set('gdrive_client_id', val);
+  document.getElementById('gdrive-setup-overlay').remove();
+  updateGDriveStatus();
+  toast('✅ Client ID נשמר! מתחבר ל-Google...');
+  setTimeout(gdriveLogin, 500);
+}
+
+// ─── Auto-backup to Drive (every 10 min if connected) ───
+setInterval(()=>{
+  if(gdriveIsConnected()) gdriveBackup();
+}, 10*60*1000);
+
+// Init on load
+window.addEventListener('DOMContentLoaded', ()=>{
+  gdriveHandleCallback(); // handle OAuth redirect
+  updateGDriveStatus();
+});
+
+
+</script>
+</body>
+</html>
